@@ -26,7 +26,7 @@ public class MediaActivity extends Activity {
     private boolean isFinish = true;
      
  
-    @Override
+    @Override  
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);
