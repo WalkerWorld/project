@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+         #######################################################################################
+   				**********************—————本应用配置字符串——————*********************************
+   		 ###################################################################################
+    -->
+    <string name="module">Libs</string> <!-- 本应用名称 -->
+    <string name="hello_world">Hello world!</string>
+    <string name="map_lable">百度地图</string> <!-- 跳转百度地图按钮文本 -->
+    <string name="action_settings">Settings</string>
+
+    <!-- drawer的开关描述 -->
+    <string name="main_drawer_toggle_open">open</string>
+    <string name="main_drawer_toggle_close">close</string>
+
+    <!--
+             #######################################################################################
+   				**********************——————第三方配置字符串————*********************************
+   		 ###################################################################################
+    -->
+    <!--
+         主页的titles
+    <string-array name="main_titles">
+        <item>首页</item>
+        <item>应用</item>
+        <item>游戏</item>
+        <item>专题</item>
+        <item>推荐</item>
+        <item>分类</item>
+        <item>排行</item>
+    </string-array>
+    -->
+    <!--
+    <string name="app_detail_info_downloadnum">下载: %1s </string>
+    <string name="app_detail_info_version">版本: %1s </string>
+    <string name="app_detail_info_date">时间: %1s </string>
+    <string name="app_detail_info_size">大小: %1s </string>
+    <string name="app_detail_des_author">作者: %1s </string>
+    <string name="tv_home">首页</string>
+    <string name="tv_setting">设置</string>
+    <string name="tv_theme">主题</string>
+    <string name="tv_scans">安装包管理</string>
+    <string name="tv_feedback">反馈</string>
+    <string name="tv_updates">检查更新</string>
+    <string name="tv_about">关于</string>
+    <string name="tv_exit">退出</string>
+    <string name="tv_user_name">未知</string>
+    <string name="tv_user_email">unknown@gmail.com</string>
+    -->
+    <string name="title_activity_media">MediaActivity</string>
+
+</resources>
