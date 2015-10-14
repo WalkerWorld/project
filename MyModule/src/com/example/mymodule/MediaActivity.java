@@ -8,6 +8,7 @@ import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 import com.walker.module.BaseApplication;
 import com.walker.module.ui.widget.MovieRecorderView;
 import com.walker.module.ui.widget.MovieRecorderView.OnRecordFinishListener;
+import com.walker.utils.StringUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -29,7 +30,9 @@ public class MediaActivity extends Activity {
     @Override  
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media);
+        setContentView(R.layout.activity_media);StringUtils.isEmail("");
+        
+        
         System.out.println("########################################");
 //        testNet();
         mRecorderView = (MovieRecorderView) findViewById(R.id.movieRecorderView);

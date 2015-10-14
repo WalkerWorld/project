@@ -25,4 +25,6 @@
     
     <color name="bg_white">#FFFFFF</color><!-- 默认白色背景色 -->
     <color name="bg_gray">#9F9F9F</color>
+    
+    <color name="text_gray">#AAAAAA</color>
 </resources>

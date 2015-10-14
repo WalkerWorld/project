@@ -8,6 +8,23 @@ package com.walker.module.constant;
 public interface Constants
 {
 
+
+	/**
+	 * 网络错误：联网错误
+	 */
+	public static final int ERROR_NET = -1;
+	
+	/**
+	 * 网络请求失败：返回错误代码值
+	 */
+	public static final int ERROR_REQUEST = -2;
+	
+	/**
+	 * 解析JSON数据错误
+	 */
+	public static final int ERROR_PARSE_JSON = -3;
+	
+	
 	/**
 	 * 服务器地址
 	 */
@@ -44,4 +61,5 @@ public interface Constants
 	 */
 	public static final String LOG_FLAG = "*********************########当前工程错误#######**********************\n";
 
+	public static final int EMPTY_DATA = -5;
 }

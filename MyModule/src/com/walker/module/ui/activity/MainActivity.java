@@ -13,12 +13,14 @@ import com.walker.bean.RequestParameters;
 import com.walker.manager.NetManager;
 import com.walker.module.BaseApplication;
 import com.walker.utils.LogUtils;
+import com.walker.utils.StringUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +42,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	private TextView tvCity;
 	private TextView tvCounty;
 	private RelativeLayout rlFrag;
+	private EditText etTest;
+	private ImageView ivTest;
+	private String strTest;
 
 
 	@SuppressLint("NewApi")
@@ -47,9 +52,15 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	protected void initView() {
 		super.initView();
 		
+		
+		
 		setContentView(R.layout.activity_main);
 		
-		ImageView ivTest = (ImageView) findViewById(R.id.iv_test);
+		etTest = (EditText) findViewById(R.id.et_test);
+		
+		strTest = etTest.getText().toString();
+		
+		ivTest = (ImageView) findViewById(R.id.iv_test);
 		
 		
 		ImageView ivTest2 = (ImageView) findViewById(R.id.iv_test2);
@@ -61,7 +72,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		testPopWindow();
 		
 //		testNet();
-		testNet2();
+//		testNet2();
 	}
 	
 	private void testNet2() {
@@ -134,7 +145,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
+		switch (v.getId()) {/*
 		case R.id.tv1:
 			LogUtils.e("显示列表");
 			new ThreeSelectorPop().showPopWidow(tvProvince, getList(), new PopCallback() {
@@ -143,6 +154,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				public void onItemClick(AdapterView<?> parant, View view, int position, long id) {
 					System.out.println("HOmeActivity" + position + "=======id" + id);
 					switch (position) {
+					
+					case 0:
+						strTest = etTest.getText().toString();
+						LogUtils.e("手机号正则测试结果： " + StringUtils.matches(strTest, StringUtils.MOBILE));
+						break;
 					case 1://展示数据库操作
 //						DbUtils dbUtils = DbUtils.create(getApplicationContext(), "user_info");
 ////						dbUtils.save(user);
@@ -150,12 +166,17 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 //						UserDbOpenHelper helper = new UserDbOpenHelper(getApplicationContext(), "user", null, 1);
 //						SQLiteDatabase database = helper.getWritableDatabase();
 //						s
-						Intent intent = new Intent();
-						intent.setClass(BaseApplication.getApplication(), MediaActivity.class);
-						startActivity(intent);
+//						Intent intent = new Intent();
+						
+//						intent.setClass(BaseApplication.getApplication(), MediaActivity.class);
+//						startActivity(intent);
+						strTest = etTest.getText().toString();
+						LogUtils.e("邮箱正则测试结果： " + StringUtils.matches(strTest, StringUtils.EMAIL));
 						break;
 						
 					case 2:
+						strTest = etTest.getText().toString();
+						LogUtils.e("车牌号正则测试结果： " + StringUtils.matches(strTest, StringUtils.CAR_NUMBER));
 						break;
 
 					default:
@@ -175,7 +196,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			break;
 		default:
 			break;
-		}
+		*/}
 	}
 
 
@@ -195,6 +216,9 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		for(int i = 0; i < 100; i++){
 		list.add("popWi送哈哈哈" + 1000*i + i);
 		}
+		list.add(0, "手机正则测试");
+		list.add(1, "邮箱正则测试");
+		list.add(2, "车牌正则测试");
 		return list;
 	}
 	

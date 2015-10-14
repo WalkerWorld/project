@@ -26,7 +26,9 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.walker.module.BaseApplication;
 import com.walker.utils.StringUtils;
+import com.walker.utils.UIUtils;
 
+import android.R.transition;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -429,10 +431,10 @@ public class ImageUtil {
 	 */
 	public static void initImageLoader(){
 		isImageLoaderInit = true;
-		File cacheDir = StorageUtils.getOwnCacheDirectory(BaseApplication.getApplication(), "imageloader/Cache"); 
+		File cacheDir = StorageUtils.getOwnCacheDirectory(UIUtils.getContext(), "imageloader/Cache"); 
 		
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration  
-			    .Builder(BaseApplication.getApplication())  
+			    .Builder(UIUtils.getContext())  
 			    .memoryCacheExtraOptions(480, 800) // max width, max height，即保存的每个缓存文件的最大长宽// Can slow ImageLoader, use it carefully (Better don't use it)/设置缓存的详细信息，最好不要设置这个  
 			    .threadPoolSize(3)//线程池内加载的数量  
 			    .threadPriority(Thread.NORM_PRIORITY - 2)  
@@ -445,7 +447,7 @@ public class ImageUtil {
 			    .discCache(new UnlimitedDiskCache(cacheDir))//自定义缓存路径  
 			    .discCacheFileCount(100) //缓存的文件数量  
 			    .defaultDisplayImageOptions(DisplayImageOptions.createSimple())  
-			    .imageDownloader(new BaseImageDownloader(BaseApplication.getApplication(), 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间  
+			    .imageDownloader(new BaseImageDownloader(UIUtils.getContext(), 5 * 1000, 30 * 1000)) // connectTimeout (5 s), readTimeout (30 s)超时时间  
 			    .writeDebugLogs() // Remove for release app  
 			    .build();//开始构建  
 		imageLoader = ImageLoader.getInstance();
@@ -475,6 +477,12 @@ public class ImageUtil {
 		if(!isImageLoaderInit){
 			initImageLoader();
 		}
-		imageLoader.displayImage(uri, iv, options);
+		try {
+			imageLoader.displayImage(uri, iv, options);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 }

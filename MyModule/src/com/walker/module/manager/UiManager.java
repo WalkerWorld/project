@@ -1,10 +1,15 @@
 package com.walker.module.manager;
 
 import com.walker.module.BaseApplication;
+import com.walker.utils.UIUtils;
 
 import android.os.Handler;
+import android.view.View;
+import android.widget.Toast;
 
 public class UiManager {
+	static View view;
+	
 	public static Thread getMainThread() {
 		return BaseApplication.getMainThread();
 	}
@@ -85,5 +90,28 @@ public class UiManager {
 			post(runnable);
 		}
 	}
+	/**
+	 * @Description: TODO
+	 * 		显示Toast
+	 *
+	 *  @param string 显示内容
+	 *  void 
+	 * 
+	 */
 	
+	public static void showToast(final String string) {
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Toast.makeText(UIUtils.getContext(), string, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+	
+	public static int getColorFromRes(int id){
+		return UIUtils.getContext().getResources().getColor(id);
+	}
+	
+
 }
