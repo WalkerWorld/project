@@ -33,24 +33,23 @@ import android.widget.Toast;
  * @描述: 和UI操作相关的类
  * 
  */
-public class UIUtils
-{
-	private static ProgressDialog mProgress = null;//进度条对象
-	
+public class UIUtils {
+
+	static View view;
+	private static ProgressDialog mProgress = null;// 进度条对象
 
 	private static Application application;
-	
+
 	public static void setApplication(Application applications) {
 		application = applications;
 	}
-	
+
 	/**
 	 * 上下文的获取
 	 * 
 	 * @return
 	 */
-	public static Context getContext()
-	{
+	public static Context getContext() {
 		return application;
 	}
 
@@ -59,22 +58,16 @@ public class UIUtils
 	 * 
 	 * @return
 	 */
-	public static Resources getResources()
-	{
+	public static Resources getResources() {
 		return getContext().getResources();
 	}
-
-
-
-
 
 	/**
 	 * 
 	 * @param dip
 	 * @return
 	 */
-	public static int dip2px(int dip)
-	{
+	public static int dip2px(int dip) {
 		// 公式 1: px = dp * (dpi / 160)
 		// 公式 2: dp = px / denistity;
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -83,8 +76,7 @@ public class UIUtils
 		return (int) (dip * density + 0.5f);
 	}
 
-	public static int px2dip(int px)
-	{
+	public static int px2dip(int px) {
 		// 公式 1: px = dp * (dpi / 160)
 		// 公式 2: dp = px / denistity;
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -93,24 +85,20 @@ public class UIUtils
 		return (int) (px / density + 0.5f);
 	}
 
-
-	public static String getString(int resId, Object... formatArgs)
-	{
+	public static String getString(int resId, Object... formatArgs) {
 		return getResources().getString(resId, formatArgs);
 	}
 
-	public static String getPackageName()
-	{
+	public static String getPackageName() {
 		return getContext().getPackageName();
 	}
-	
+
 	/**
 	 * 开启activity
 	 * 
 	 * @param intent
 	 */
-	public static void startActivity(Intent intent)
-	{
+	public static void startActivity(Intent intent) {
 		getContext().startActivity(intent);
 	}
 
@@ -173,12 +161,10 @@ public class UIUtils
 		);
 		return dialog;
 	}
-	
-	
+
 	public static View inflate(int resId) {
 		return LayoutInflater.from(getContext()).inflate(resId, null);
 	}
-
 
 	/** 获取文字 */
 	public static String getString(int resId) {
@@ -210,33 +196,33 @@ public class UIUtils
 		return getResources().getColorStateList(resId);
 	}
 
-/*
-	*//** 对toast的简易封装。线程安全，可以在非UI线程调用。 *//*
-	public static void showToastSafe(final int resId) {
-		showToastSafe(getString(resId));
-	}
-
-	*//** 对toast的简易封装。线程安全，可以在非UI线程调用。 *//*
-	public static void showToastSafe(final String str) {
-		if (isRunInMainThread()) {
-			showToast(str);
-		} else {
-			post(new Runnable() {
-				@Override
-				public void run() {
-					showToast(str);
-				}
-			});
-		}
-	}*/
+	/*
+		*//** 对toast的简易封装。线程安全，可以在非UI线程调用。 */
+	/*
+	 * public static void showToastSafe(final int resId) {
+	 * showToastSafe(getString(resId)); }
+	 * 
+	 *//** 对toast的简易封装。线程安全，可以在非UI线程调用。 *//*
+											 * public static void
+											 * showToastSafe(final String str) {
+											 * if (isRunInMainThread()) {
+											 * showToast(str); } else { post(new
+											 * Runnable() {
+											 * 
+											 * @Override public void run() {
+											 * showToast(str); } }); } }
+											 */
 
 	/**
 	 * 在当前Activity中打印Toast
-	 * @param str 被打印的数据
+	 * 
+	 * @param str
+	 *            被打印的数据
 	 */
-/* */
+	/* */
 	/**
 	 * 弹出进度条
+	 * 
 	 * @param context
 	 * @param title
 	 * @param message
@@ -244,9 +230,8 @@ public class UIUtils
 	 * @param cancelable
 	 * @return 进度对话框
 	 */
-	public static ProgressDialog showProgress(Context context,
-			CharSequence title, CharSequence message, boolean indeterminate,
-			boolean cancelable) {
+	public static ProgressDialog showProgress(Context context, CharSequence title, CharSequence message,
+			boolean indeterminate, boolean cancelable) {
 		ProgressDialog dialog = new ProgressDialog(context);
 		dialog.setTitle(title);
 		dialog.setMessage(message);
@@ -257,6 +242,7 @@ public class UIUtils
 		mProgress = dialog;
 		return dialog;
 	}
+
 	/**
 	 * 关闭进度条对话框
 	 */
@@ -270,16 +256,17 @@ public class UIUtils
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 弹出对话框
+	 * 
 	 * @param context
 	 * @param strTitle
 	 * @param strText
 	 * @param icon
 	 * @param text
 	 */
-	public static void showDialog(Activity context, String strTitle,
-			String strText, int icon, String text) {
+	public static void showDialog(Activity context, String strTitle, String strText, int icon, String text) {
 		Builder tDialog = new Builder(context);
 		tDialog.setIcon(icon);
 		tDialog.setTitle(strTitle);
@@ -297,4 +284,6 @@ public class UIUtils
 			e.printStackTrace();
 		}
 	}
+
+
 }

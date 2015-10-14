@@ -20,9 +20,20 @@ import org.json.JSONException;
 
 public class StringUtils {
 	public final static String UTF_8 = "utf-8";
+	public final static int MOBILE = 0;
+	public final static int EMAIL = 1;
+	public final static int CAR_NUMBER = 2;
+	
+	
 	private static final char HEX_DIGITS[] = { '0', '1', '2', '3', '4', '5',
 		'6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
+	private static final String REGULAR_MOBILE = "13\\d{9}|14[57]\\d{8}|15[012356789]\\d{8}|18[01256789]\\d{8}|17[0678]\\d{8}";
+	private static final String REGULAR_EMAIL = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+//	private static final String REGULAR_CAR_NUMBER = "^[\u4E00-\u9FA5]{1}[A-Z0-9]{6}$)|(^[A-Z]{2}[A-Z0-9]{2}[A-Z0-9\u4E00-\u9FA5]{1}[A-Z0-9]{4}$)|(^[\u4E00-\u9FA5]{1}[A-Z0-9]{5}[挂学警军港澳]{1}$)|(^[A-Z]{2}[0-9]{5}$)|(^(08|38){1}[A-Z0-9]{4}[A-Z0-9挂学警军港澳]{1}$";
+	//车牌号校验有误
+	private static final String REGULAR_CAR_NUMBER = "[\u4e00-\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5}";
+	
+	
 	/** 判断字符串是否有值，如果为null或者是空字符串或者只有空格或者为"null"字符串，则返回true，否则则返回false */
 	public static boolean isEmpty(String value) {
 		if (value != null && !"".equalsIgnoreCase(value.trim())
@@ -31,6 +42,51 @@ public class StringUtils {
 		} else {
 			return true;
 		}
+	}
+	private static boolean res;
+	public static boolean matches(String matchStr, int matchType){
+		res = false;
+		switch (matchType) {
+		case MOBILE:
+			res = matchStr.matches(REGULAR_MOBILE);
+			break;
+
+		case EMAIL:
+			res = matchStr.matches(REGULAR_EMAIL);
+			
+			break;
+
+		case CAR_NUMBER:
+			res = matchStr.matches(REGULAR_CAR_NUMBER);
+			break;
+		default:
+			break;
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * 验证邮箱格式
+	 * */
+	public static boolean isEmail(String email) {
+		String str = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+		Pattern p = Pattern.compile(str);
+		Matcher m = p.matcher(email);
+		return m.matches();
+
+	}
+
+	/**
+	 * 验证手机号码格式
+	 * */
+	public static boolean isMobileNO(String mobiles) {
+		if(isEmpty(mobiles)){
+			return false;
+		}
+		Pattern p = Pattern.compile("^1(3[0-9]|4[57]|5[0-35-9]|8[025-9])\\d{8}$");
+		Matcher m = p.matcher(mobiles);
+		return m.matches();
 	}
 
 	/** 判断多个字符串是否相等，如果其中有一个为空字符串或者null，则返回false，只有全相等才返回true */
@@ -140,28 +196,7 @@ public class StringUtils {
 	}
 
 
-	/**
-	 * 验证邮箱格式
-	 * */
-	public static boolean isEmail(String email) {
-		String str = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
-		Pattern p = Pattern.compile(str);
-		Matcher m = p.matcher(email);
-		return m.matches();
 
-	}
-
-	/**
-	 * 验证手机号码格式
-	 * */
-	public static boolean isMobileNO(String mobiles) {
-		if(isEmpty(mobiles)){
-			return false;
-		}
-		Pattern p = Pattern.compile("^1(3[0-9]|4[57]|5[0-35-9]|8[025-9])\\d{8}$");
-		Matcher m = p.matcher(mobiles);
-		return m.matches();
-	}
 
 	public static String[] getSchoolYear(int year, int month) {
 		if (month < 7) {

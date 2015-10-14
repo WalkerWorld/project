@@ -44,4 +44,21 @@ public class ViewUtils {
 	public static <T extends View> T findViewById(View layout, int id) {
 		return (T) layout.findViewById(id);
 	}
+	static View view;
+	/**
+	 * @Description: TODO 根据View ID获取对应的View布局对象
+	 * @param id
+	 *            ViewID
+	 * @return View View对象
+	 */
+	public static View getViewById(int layoutId) {
+		view = null;
+		try {
+			view = View.inflate(UIUtils.getContext(), layoutId, null);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return view;
+	}
 }
