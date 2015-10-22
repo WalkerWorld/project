@@ -36,7 +36,21 @@ import android.widget.TextView;
  * @date 2015年9月13日 上午8:09:39
  *
  */
-public class MainActivity extends BaseActivity implements OnClickListener {
+public class MainActivity extends BaseActivity {
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/*
 
 	private TextView tvProvince;
 	private TextView tvCity;
@@ -112,14 +126,14 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	
 	
-	/**
+	*//**
 	 * @Title: testPopWindow
 	 *
 	 * @Description: TODO
 	 *
 	 *  void 
 	 * 
-	 */
+	 *//*
 	
 	private void testPopWindow() {
 		tvProvince = (TextView) findViewById(R.id.tv1);
@@ -139,13 +153,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	}
 
 
-	/* (非 Javadoc)
+	 (非 Javadoc)
 	 * Description:
 	 * @param v
-	 */
+	 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {/*
+		switch (v.getId()) {
 		case R.id.tv1:
 			LogUtils.e("显示列表");
 			new ThreeSelectorPop().showPopWidow(tvProvince, getList(), new PopCallback() {
@@ -196,11 +210,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			break;
 		default:
 			break;
-		*/}
+		}
 	}
 
 
-	/**
+	*//**
 	 * @Title: getList
 	 *
 	 * @Description: TODO
@@ -208,7 +222,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 *  @return
 	 *  View 
 	 * 
-	 */
+	 *//*
 	
 	private ArrayList<String> getList() {
 		ArrayList<String> list  = new ArrayList<>();
@@ -223,4 +237,22 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	}
 	
 	
-}
+*/
+
+	@Override
+	protected void initFiled() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected int getViewId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void initContentView() {
+		// TODO Auto-generated method stub
+		
+	}}

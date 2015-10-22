@@ -4,8 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 
 /**
@@ -14,7 +17,7 @@ import android.os.Bundle;
  * @描述: TODO
  * 
  */
-public class BaseActivity extends Activity{
+public abstract class BaseActivity extends FragmentActivity implements OnClickListener{
 	/**
 	 * 存储全局的activity
 	 */
@@ -33,12 +36,18 @@ public class BaseActivity extends Activity{
 		{
 			mActivities.add(this);
 			
-			initView();
+			initContentView();
+//			setContentView(getViewId());
 			initActionBar();
+			initFiled();
 			initData();
 		}
 	}
 
+
+	
+	
+	
 	@Override
 	protected void onDestroy(){
 
@@ -86,22 +95,30 @@ public class BaseActivity extends Activity{
 		}
 
 	}
+	/**
+	 * 初始化View的方法，子类如果有View的初始化，自己覆盖实现
+	 */
+	protected abstract  void initContentView();
 
+	protected  int getViewId(){
+		return 0;
+		};
+
+
+	protected abstract void initFiled();
 	/**
 	 * 加载数据的方法，自己覆盖实现
 	 */
-	protected void initData(){}
+	protected abstract void initData();
 
 	/**
 	 * 初始化ActionBar的方法，子类如果有ActionBar的初始化，自己覆盖实现
 	 */
 	protected void initActionBar(){}
 
-	/**
-	 * 初始化View的方法，子类如果有View的初始化，自己覆盖实现
-	 */
-	protected void initView(){}
-
+	@Override
+	public abstract void onClick(View v) ;
+	
 	/**
 	 * 获取前台activity
 	 * 

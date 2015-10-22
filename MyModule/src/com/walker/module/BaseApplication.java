@@ -21,12 +21,12 @@ import android.os.Looper;
  */
 public class BaseApplication extends Application
 {
-	private static Context	mContext;
-	private static Thread	mMainThread;
-	private static long		mMainThreadId;
-	private static Handler	mMainThreadHandler;
-	private static Looper	mMainThreadLooper;
-	private static BaseApplication mApplication;
+	 static Context	mContext;
+	 static Thread	mMainThread;
+	 static long		mMainThreadId;
+	 static Handler	mMainThreadHandler;
+	 static Looper	mMainThreadLooper;
+	 static BaseApplication mApplication;
 	@Override
 	public void onCreate()
 	{

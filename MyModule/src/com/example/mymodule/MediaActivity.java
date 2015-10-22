@@ -1,11 +1,16 @@
 package com.example.mymodule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 import com.walker.module.BaseApplication;
+import com.walker.module.ui.adapter.SuperAdapter;
+import com.walker.module.ui.holder.SuperHolder;
 import com.walker.module.ui.widget.MovieRecorderView;
 import com.walker.module.ui.widget.MovieRecorderView.OnRecordFinishListener;
 import com.walker.utils.StringUtils;
@@ -31,7 +36,15 @@ public class MediaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);StringUtils.isEmail("");
-        
+        List list = new ArrayList<>();
+        SuperAdapter adapter = new SuperAdapter(list) {
+			
+			@Override
+			public SuperHolder getHolder() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
         
         System.out.println("########################################");
 //        testNet();

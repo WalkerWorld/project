@@ -17,8 +17,8 @@ public class MD5Util {
 	private static final LinkedList<SoftReference<String>> cachelist = new LinkedList<SoftReference<String>>();
 
 	private static final int sum = 1000000;
-	
-	private static final Lock lock =  new ReentrantLock();
+
+	private static final Lock lock = new ReentrantLock();
 
 	public final static String md5s(String src) {
 		if (src == null)
@@ -44,33 +44,21 @@ public class MD5Util {
 		return sb.toString();
 	}
 
-	/*@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-	public final static String md5(String src) {
-		String s = cache.get(src);
-		if (s == null) {
-			s = md5s(src);
-			lock.lock();
-			try{
-				if (cachelist.size()>=sum)
-					cache.remove(cachelist.pop());
-				else
-					cachelist.addLast(new SoftReference<String>(src));
-			}finally
-			{
-				lock.unlock();
-			}
-			cache.put(src, s);
-		}
-		return s;
-	}*/
-	public final static void clear()
-	{
+	/*
+	 * @TargetApi(Build.VERSION_CODES.GINGERBREAD) public final static String
+	 * md5(String src) { String s = cache.get(src); if (s == null) { s =
+	 * md5s(src); lock.lock(); try{ if (cachelist.size()>=sum)
+	 * cache.remove(cachelist.pop()); else cachelist.addLast(new
+	 * SoftReference<String>(src)); }finally { lock.unlock(); } cache.put(src,
+	 * s); } return s; }
+	 */
+	public final static void clear() {
 		cache.clear();
 		cachelist.clear();
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(md5s("123456abc"));
 	}
-	
+
 }

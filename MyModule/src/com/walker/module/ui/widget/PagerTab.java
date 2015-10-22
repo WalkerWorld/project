@@ -1,5 +1,6 @@
 package com.walker.module.ui.widget;
 
+import com.example.mymodule.R;
 import com.walker.module.ui.activity.BaseActivity;
 import com.walker.utils.UIUtils;
 
@@ -27,34 +28,34 @@ import android.widget.TextView;
 
 public class PagerTab extends ViewGroup {
 
-	public PagerTab(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
-
 	private ViewPager mViewPager;
 	private PageListener mPageListener = new PageListener();//用于注册给ViewPager监听状态和滚动
 	private OnPageChangeListener mDelegatePageListener;//用于通知外界ViewPager的状态和滚动
-	private BaseActivity mActivity;
+//	private BaseActivity mActivity;
+	private Context mActivity;
+	
 
 	private int mDividerPadding = 12;// 分割线上下的padding
 	private int mDividerWidth = 1;// 分割线的宽度
-	private int mDividerColor = 0x1A000000;//分割线颜色
+//	private int mDividerColor = 0x1A000000;//分割线颜色
+	private int mDividerColor = 0x00000000;//分割线颜色
+	
 	private Paint mDividerPaint;//分割线的画笔
 
 	private int mIndicatorHeight = 4;//指示器的高度
 	private int mIndicatorWidth;//指示器的宽度，是动态的随着tab的宽度变化
 	private int mIndicatorLeft;//指示器的距离左边的距离
-	private int mIndicatorColor = 0xFF0084FF;//指示器颜色
+	private int mIndicatorColor = 0x000084FF;//指示器颜色
+//	private int mIndicatorColor = 0xFF0084FF;//指示器颜色
 	private Paint mIndicatorPaint; //指示器的画笔
 
 	private int mContentWidth;//记录自身内容的宽度
 	private int mContentHeight;//记录自身内容的高度
 
-	private int mTabPadding = 24;// tab左右的内边距
-	private int mTabTextSize = 16; //tab文字大小
-//	private int mTabBackgroundResId = R.drawable.bg_tab_text;// tab背景资源
-//	private int mTabTextColorResId = R.color.tab_text_color; //tab文字颜色
+	private int mTabPadding = 8;// tab左右的内边距
+	private int mTabTextSize = 13; //tab文字大小
+	private int mTabBackgroundResId = R.drawable.bg_tab_text;// tab背景资源
+	private int mTabTextColorResId = R.color.tab_text_color; //tab文字颜色
 	private int mTabCount;//tab的个数
 
 	private int mCurrentPosition = 0;//当前光标所处的tab，规则是以光标的最左端所在的item的position
@@ -77,9 +78,9 @@ public class PagerTab extends ViewGroup {
 	private EdgeEffectCompat mLeftEdge;//处理overScroll的反馈效果
 	private EdgeEffectCompat mRightEdge;
 
-	/*public PagerTab(Context context) {
+	public PagerTab(Context context) {
 		this(context, null);
-	}*/
+	}
 
 	public PagerTab(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
@@ -90,7 +91,9 @@ public class PagerTab extends ViewGroup {
 		if (context instanceof BaseActivity) {
 			mActivity = (BaseActivity) context;
 		}
+		this.mActivity = context;
 		init();
+		System.out.println("PagerTable 上下文环境： \n" + mActivity);
 		initPaint();
 	}
 
@@ -177,9 +180,17 @@ public class PagerTab extends ViewGroup {
 		tab.setSingleLine();
 		tab.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
 		tab.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-//		tab.setTextColor(UIUtils.getColorStateList(mTabTextColorResId));
-//		tab.setBackgroundDrawable(UIUtils.getDrawable(mTabBackgroundResId));
-		tab.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		tab.setTextColor(UIUtils.getColorStateList(mTabTextColorResId));
+		if(position == 0){
+//			tab.setTextColor(UIUtils.getColor(R.color.text_red));
+//			tab.setFocusable(true);
+			tab.setSelected(true);
+			mViewPager.setCurrentItem(0);
+		}
+		tab.setBackgroundDrawable(UIUtils.getDrawable(mTabBackgroundResId));
+//		tab.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		tab.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, 80));
+		
 		addTab(position, tab);
 	}
 
@@ -598,5 +609,4 @@ public class PagerTab extends ViewGroup {
 		public int getPageIconResId(int position);
 		public int getPageSelectedIconResId();
 	}
-
 }

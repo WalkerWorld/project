@@ -1,6 +1,8 @@
 package com.walker.module.ui.pager;
 
+import com.example.mymodule.R;
 import com.walker.manager.ThreadManager;
+import com.walker.module.callback.LoadingPagerCallback;
 import com.walker.module.manager.UiManager;
 import com.walker.utils.UIUtils;
 
@@ -13,15 +15,15 @@ import android.widget.FrameLayout;
 public abstract class LoadingPager extends FrameLayout {
 
 	// 加载默认的状态
-	private static final int START_UNLOADING = 0;
+	private static final int START_UNLOADING = -2;
 	// 加载的状态
-	private static final int START_LOADING = 1;
+	private static final int START_LOADING = -3;
 	// 失败的状态
-	private static final int START_ERROR = 3;
+	public static final int START_ERROR = -1;
 	// 加载空的状态
-	private static final int START_EMPTY = 4;
+	public static final int START_EMPTY = 1;
 	// 加载成功的状态
-	private static final int START_SUCCESS = 5;
+	public static final int START_SUCCESS = 0;
 
 	private int mState;
 	private View loadingView;
@@ -69,7 +71,6 @@ public abstract class LoadingPager extends FrameLayout {
 
 		// 显示出界面
 		showSafePagerView();
-
 	}
 
 	private void showSafePagerView() {
@@ -129,7 +130,7 @@ public abstract class LoadingPager extends FrameLayout {
 	}
 
 	/**
-	 * 获取数据的接口
+	 * 获取数据的接口:更改为回调方式执行，回调加载数据
 	 * 
 	 * @author xml_tech
 	 * 
@@ -138,21 +139,28 @@ public abstract class LoadingPager extends FrameLayout {
 
 		@Override
 		public void run() {
-			final LoadResult result = load();
-			UiManager.runInMainThread(new Runnable() {
-
+			final LoadResult result = load(new LoadingPagerCallback() {
+				
 				@Override
-				public void run() {
-					mState = result.getValue();
-					showPageView();
+				public void loadDataResult(int flg) {
+					mState = flg;
+					UiManager.runInMainThread(new Runnable() {
+						
+						@Override
+						public void run() {
+//							mState = result.getValue();
+							showPageView();
+						}
+					});
 				}
 			});
+			
 		}
 
 	}
 
 	public enum LoadResult {
-		ERROR(3), EMPTY(4), SUCCESS(5);
+		ERROR(-1), EMPTY(1), SUCCESS(0);
 
 		int value;
 
@@ -168,24 +176,24 @@ public abstract class LoadingPager extends FrameLayout {
 
 	protected abstract View createLoadedView();
 
-	protected abstract LoadResult load();
+	protected abstract LoadResult load(LoadingPagerCallback callback);
 
 	// 空的界面
 	private View createEmptyView() {
-//		return UIUtils.inflate(R.layout.pager_empty);
-		return null;
+		return UIUtils.inflate(R.layout.pager_empty);
+//		return null;
 	}
 
 	// 错误界面
 	private View createErrorView() {
-//		return UIUtils.inflate(R.layout.pager_error);
-		return null;
+		return UIUtils.inflate(R.layout.pager_error);
+//		return null;
 	}
 
 	// 加载界面
 	private View createLoadingView() {
-//		return UIUtils.inflate(R.layout.pager_loading);
-		return null;
+		return UIUtils.inflate(R.layout.pager_loading);
+//		return null;
 	}
 
 }

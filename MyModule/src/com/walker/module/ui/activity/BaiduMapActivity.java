@@ -8,7 +8,8 @@
 */
 package com.walker.module.ui.activity;
 
-
+import android.view.View;
+import android.view.View.OnClickListener;
 import com.baidu.mapapi.SDKInitializer;
 import com.example.mymodule.R;
 import com.walker.module.BaseApplication;
@@ -25,14 +26,34 @@ import android.widget.Toast;
  * @date 2015年8月28日 下午4:35:33
  * 
  */
-public class BaiduMapActivity extends BaseActivity {
-	/* (非 Javadoc)
-	 * Description:
-	 */
+public class BaiduMapActivity extends BaseActivity{
+
 	@Override
-	protected void initView() {
-		super.initView();
-		SDKInitializer.initialize(BaseApplication.getApplication());
-		setContentView(R.layout.activity_baidu_map);
+	protected int getViewId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
-}
+
+	@Override
+	protected void initFiled() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void initContentView() {
+		// TODO Auto-generated method stub
+		
+	}}
