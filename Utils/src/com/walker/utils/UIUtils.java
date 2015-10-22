@@ -196,30 +196,6 @@ public class UIUtils {
 		return getResources().getColorStateList(resId);
 	}
 
-	/*
-		*//** 对toast的简易封装。线程安全，可以在非UI线程调用。 */
-	/*
-	 * public static void showToastSafe(final int resId) {
-	 * showToastSafe(getString(resId)); }
-	 * 
-	 *//** 对toast的简易封装。线程安全，可以在非UI线程调用。 *//*
-											 * public static void
-											 * showToastSafe(final String str) {
-											 * if (isRunInMainThread()) {
-											 * showToast(str); } else { post(new
-											 * Runnable() {
-											 * 
-											 * @Override public void run() {
-											 * showToast(str); } }); } }
-											 */
-
-	/**
-	 * 在当前Activity中打印Toast
-	 * 
-	 * @param str
-	 *            被打印的数据
-	 */
-	/* */
 	/**
 	 * 弹出进度条
 	 * 
@@ -284,6 +260,5 @@ public class UIUtils {
 			e.printStackTrace();
 		}
 	}
-
 
 }

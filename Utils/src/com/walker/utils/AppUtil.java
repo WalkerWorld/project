@@ -70,23 +70,6 @@ public class AppUtil {
 	}
 
 	/**
-	 * 方法描述：安装一个Apk
-	 * @return 是否成功
-	 */
-	public static boolean isAppInstall(Context context, String packname) {
-		PackageManager manager = context.getPackageManager();
-		@SuppressWarnings("rawtypes")
-		List pkgList = manager.getInstalledPackages(0);
-		for (int i = 0; i < pkgList.size(); i++) {
-			PackageInfo pI = (PackageInfo) pkgList.get(i);
-			if (pI.packageName.equalsIgnoreCase(packname)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * 
 	 * 方法描述：将资源目录下文件写入本地 
 	 * @param fileName :文件名 
@@ -116,17 +99,7 @@ public class AppUtil {
 		return bRet;
 	}
 
-	/**
-	 * 获取一个apk的包信息
-	 * @param context 上下文
-	 * @param archiveFilePath apk本地路径
-	 * @return apk的包信息
-	 */ 
-	public static PackageInfo getApkInfo(Context context, String archiveFilePath) {
-		PackageManager pm = context.getPackageManager();
-		PackageInfo apkInfo = pm.getPackageArchiveInfo(archiveFilePath, 128);
-		return apkInfo;
-	}
+	
 
 	/**
 	 * 方法描述：获取imsi码

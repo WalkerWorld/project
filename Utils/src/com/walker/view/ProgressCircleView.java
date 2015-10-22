@@ -1,7 +1,5 @@
 package com.walker.view;
 
-
-
 import com.walker.utils.UIUtils;
 
 import android.content.Context;
@@ -23,15 +21,14 @@ import android.widget.TextView;
  * @描述: 环形进度条的view
  * 
  */
-public class ProgressCircleView extends LinearLayout
-{
-	private TextView	mTvText;
-	private ImageView	mIvIcon;
-	private int			mProgress;
+public class ProgressCircleView extends LinearLayout {
+	private TextView mTvText;
+	private ImageView mIvIcon;
+	private int mProgress;
 
-	private Paint		mPaint	= new Paint();	// 画笔
-	private RectF		mOval;
-	private boolean		mProgressEnable;
+	private Paint mPaint = new Paint(); // 画笔
+	private RectF mOval;
+	private boolean mProgressEnable;
 	public float test;
 
 	public ProgressCircleView(Context context) {
@@ -46,13 +43,13 @@ public class ProgressCircleView extends LinearLayout
 		init();
 	}
 
-	private void init()
-	{
+	private void init() {
 		// view挂载xml
-//		View.inflate(getContext(), R.layout.download_view, this);
-//
-//		this.mIvIcon = (ImageView) findViewById(R.id.progress_circle_iv_icon);
-//		this.mTvText = (TextView) findViewById(R.id.progress_circle_iv_text);
+		// View.inflate(getContext(), R.layout.download_view, this);
+		//
+		// this.mIvIcon = (ImageView)
+		// findViewById(R.id.progress_circle_iv_icon);
+		// this.mTvText = (TextView) findViewById(R.id.progress_circle_iv_text);
 	}
 
 	/**
@@ -60,8 +57,7 @@ public class ProgressCircleView extends LinearLayout
 	 * 
 	 * @param text
 	 */
-	public void setTipText(String text)
-	{
+	public void setTipText(String text) {
 		mTvText.setText(text);
 	}
 
@@ -70,8 +66,7 @@ public class ProgressCircleView extends LinearLayout
 	 * 
 	 * @param resId
 	 */
-	public void setTipIcon(int resId)
-	{
+	public void setTipIcon(int resId) {
 		mIvIcon.setImageResource(resId);
 	}
 
@@ -81,30 +76,28 @@ public class ProgressCircleView extends LinearLayout
 	 * @param progress
 	 *            1-100
 	 */
-	public void setProgress(int progress)
-	{
+	public void setProgress(int progress) {
 		this.mProgress = progress;
 		// UI刷新
 		invalidate();
 	}
 
-	public void setProgressEnable(boolean enable)
-	{
+	public void setProgressEnable(boolean enable) {
 		this.mProgressEnable = enable;
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas)
-	{
+	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		if (!mProgressEnable) { return; }
+		if (!mProgressEnable) {
+			return;
+		}
 
 		// 画圆形进度条
 		// 画扇形
 		// canvas ,paint
-		if (mOval == null)
-		{
+		if (mOval == null) {
 			float left = mIvIcon.getLeft() + UIUtils.dip2px(1);
 			float top = mIvIcon.getTop() + UIUtils.dip2px(1);
 			float right = mIvIcon.getRight() - UIUtils.dip2px(1);
@@ -121,7 +114,7 @@ public class ProgressCircleView extends LinearLayout
 		mPaint.setColor(Color.RED);// 设置颜色
 		mPaint.setAntiAlias(true);// 设置抗锯齿
 		mPaint.setStyle(Style.STROKE);// 空心
-//		mPaint.setStrokeWidth(UIUtils.dip2px(3));
+		// mPaint.setStrokeWidth(UIUtils.dip2px(3));
 
 		canvas.drawArc(mOval, startAngle, sweepAngle, useCenter, mPaint);
 

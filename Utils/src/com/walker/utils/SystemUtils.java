@@ -29,7 +29,7 @@ import java.util.List;
  * Created by mwqi on 2014/6/19.
  */
 public class SystemUtils {
-	
+
 	/*
 	 * 获取手机信息
 	 */
@@ -48,7 +48,7 @@ public class SystemUtils {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * 判断电话卡状态
 	 * 
@@ -284,7 +284,7 @@ public class SystemUtils {
 	public static String[] getDivceInfo() {
 		String str1 = "/proc/cpuinfo";
 		String str2 = "";
-		String[] cpuInfo = {"", ""};
+		String[] cpuInfo = { "", "" };
 		String[] arrayOfString;
 		try {
 			FileReader fr = new FileReader(str1);
@@ -416,7 +416,8 @@ public class SystemUtils {
 		long totalSpace = -1L;
 		if (FileUtils.isSDCardAvailable()) {
 			try {
-				String path = Environment.getExternalStorageDirectory().getPath();// 获取外部存储目录即 SDCard
+				String path = Environment.getExternalStorageDirectory().getPath();// 获取外部存储目录即
+																					// SDCard
 				StatFs stat = new StatFs(path);
 				long blockSize = stat.getBlockSize();
 				long totalBlocks = stat.getBlockCount();
@@ -465,10 +466,12 @@ public class SystemUtils {
 	public static long getAvailableInternalMemorySize() {
 		long availableSpace = -1l;
 		try {
-			String path = Environment.getDataDirectory().getPath();// 获取 Android 数据目录
+			String path = Environment.getDataDirectory().getPath();// 获取 Android
+																	// 数据目录
 			StatFs stat = new StatFs(path);// 一个模拟linux的df命令的一个类,获得SD卡和手机内存的使用情况
 			long blockSize = stat.getBlockSize();// 返回 Int ，大小，以字节为单位，一个文件系统
-			long availableBlocks = stat.getAvailableBlocks();// 返回 Int ，获取当前可用的存储空间
+			long availableBlocks = stat.getAvailableBlocks();// 返回 Int
+																// ，获取当前可用的存储空间
 			availableSpace = availableBlocks * blockSize;
 		} catch (Exception e) {
 			LogUtils.e(e);
@@ -506,7 +509,7 @@ public class SystemUtils {
 		for (ActivityManager.RunningAppProcessInfo runapp : runapps) { // 遍历运行中的程序
 			if (packageName.equals(runapp.processName)) {// 得到程序进程名，进程名一般就是包名，但有些程序的进程名并不对应一个包名
 				// 返回指定PID程序的内存信息，可以传递多个PID，返回的也是数组型的信息
-				Debug.MemoryInfo[] processMemoryInfo = activityManager.getProcessMemoryInfo(new int[]{runapp.pid});
+				Debug.MemoryInfo[] processMemoryInfo = activityManager.getProcessMemoryInfo(new int[] { runapp.pid });
 				// 得到内存信息中已使用的内存，单位是K
 				size = processMemoryInfo[0].getTotalPrivateDirty() * 1024;
 			}

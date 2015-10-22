@@ -35,7 +35,7 @@ import android.util.Log;
 /**
  * 图片处理工具类
  */
-public class ImageManager {
+public class MyImageManager {
 	/** 网络类型 0表示其他网络 1表示移动联通 2代表电信 */
 	public static int NetType = 0;
 	/** 中国移动联通wap代理网关 */
@@ -281,7 +281,7 @@ public class ImageManager {
 								saveToSD(imagePath, bitmap);
 							} catch (Exception e) {
 								e.printStackTrace();
-								Log.e(ImageManager.class.getName(), "保存图片至SD卡出错！");
+								Log.e(MyImageManager.class.getName(), "保存图片至SD卡出错！");
 							}
 							msg.what = 0;
 							msg.obj = bitmap;
@@ -289,7 +289,7 @@ public class ImageManager {
 
 						}
 					} catch (IOException e) {
-						Log.e(ImageManager.class.getName(), "网络请求图片出错！");
+						Log.e(MyImageManager.class.getName(), "网络请求图片出错！");
 						e.printStackTrace();
 					}
 				}

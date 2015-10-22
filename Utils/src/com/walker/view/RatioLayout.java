@@ -1,6 +1,5 @@
 package com.walker.view;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -9,17 +8,14 @@ import android.widget.FrameLayout;
 /**
  * @类名: RatioLayout
  * 
- * @描述: 控制宽高比的布局：
- * @1. 已知 宽度准确值，通过宽高比例， 要计算出 高度的值
- * @2. 已知 高度准确值，通过宽高比例， 要计算出 宽度的值
+ * @描述: 控制宽高比的布局： @1. 已知 宽度准确值，通过宽高比例， 要计算出 高度的值 @2. 已知 高度准确值，通过宽高比例， 要计算出 宽度的值
  */
-public class RatioLayout extends FrameLayout
-{
-	public static final int	RELATIVE_WIDTH	= 0;
-	public static final int	RELATIVE_HEIGHT	= 1;
+public class RatioLayout extends FrameLayout {
+	public static final int RELATIVE_WIDTH = 0;
+	public static final int RELATIVE_HEIGHT = 1;
 
-	private float			mRatio;							// 宽高比例
-	private int				mRelative		= RELATIVE_WIDTH;	// 相对谁来计算
+	private float mRatio; // 宽高比例
+	private int mRelative = RELATIVE_WIDTH; // 相对谁来计算
 
 	public RatioLayout(Context context) {
 		super(context);
@@ -29,29 +25,30 @@ public class RatioLayout extends FrameLayout
 	public RatioLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 
-//		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RatioLayout);
-//
-//		// 取值
-//		mRatio = ta.getFloat(R.styleable.RatioLayout_ratio, 0f);
-//		mRelative = ta.getInt(R.styleable.RatioLayout_relative, RELATIVE_WIDTH);
+		// TypedArray ta = context.obtainStyledAttributes(attrs,
+		// R.styleable.RatioLayout);
+		//
+		// // 取值
+		// mRatio = ta.getFloat(R.styleable.RatioLayout_ratio, 0f);
+		// mRelative = ta.getInt(R.styleable.RatioLayout_relative,
+		// RELATIVE_WIDTH);
 
-//		ta.recycle();
+		// ta.recycle();
 	}
 
-	public void setRatio(float ratio)
-	{
+	public void setRatio(float ratio) {
 		this.mRatio = ratio;
 	}
 
-	public void setRelative(int relative)
-	{
-		if (relative > 1 || relative < 0) { return; }
+	public void setRelative(int relative) {
+		if (relative > 1 || relative < 0) {
+			return;
+		}
 		this.mRelative = relative;
 	}
 
 	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-	{
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		// MeasureSpec
 		// 1. widthMeasureSpec : 32位的0101......
 		// (头两位表示 模式：UNSPECIFIED 未定义，EXACTLY，AT_MOST)
@@ -65,8 +62,7 @@ public class RatioLayout extends FrameLayout
 		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-		if (widthMode == MeasureSpec.EXACTLY && mRatio != 0f && mRelative == RELATIVE_WIDTH)
-		{
+		if (widthMode == MeasureSpec.EXACTLY && mRatio != 0f && mRelative == RELATIVE_WIDTH) {
 			// @1. 已知 宽度准确值，通过宽高比例， 要计算出 高度的值
 
 			// 计算出孩子的宽度和高度
@@ -82,9 +78,7 @@ public class RatioLayout extends FrameLayout
 			int measuredWidth = widthSize;
 			int measuredHeight = height + getPaddingTop() + getPaddingBottom();
 			setMeasuredDimension(measuredWidth, measuredHeight);
-		}
-		else if (heightMode == MeasureSpec.EXACTLY && mRatio != 0f && mRelative == RELATIVE_HEIGHT)
-		{
+		} else if (heightMode == MeasureSpec.EXACTLY && mRatio != 0f && mRelative == RELATIVE_HEIGHT) {
 			// @2. 已知 高度准确值，通过宽高比例， 要计算出 宽度的值
 			int height = heightSize - getPaddingTop() - getPaddingBottom();
 			int width = (int) (height * mRatio + 0.5f);
@@ -98,9 +92,7 @@ public class RatioLayout extends FrameLayout
 			int measuredWidth = width + getPaddingLeft() + getPaddingRight();
 			int measuredHeight = heightSize;
 			setMeasuredDimension(measuredWidth, measuredHeight);
-		}
-		else
-		{
+		} else {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
 	}

@@ -9,11 +9,9 @@ import android.graphics.drawable.StateListDrawable;
  * 
  * @描述: drawable xml 对应的类的工具类
  */
-public class DrawableUtils
-{
+public class DrawableUtils {
 
-	public static GradientDrawable getGradientDrawable(int shape, float radius, int argb)
-	{
+	public static GradientDrawable getGradientDrawable(int shape, float radius, int argb) {
 		GradientDrawable bg = new GradientDrawable();
 		bg.setShape(shape);// 设置形状
 		bg.setCornerRadius(radius);// 设置圆角
@@ -21,8 +19,7 @@ public class DrawableUtils
 		return bg;
 	}
 
-	public static StateListDrawable getStateListDrawable(Drawable normalBg, Drawable pressBg)
-	{
+	public static StateListDrawable getStateListDrawable(Drawable normalBg, Drawable pressBg) {
 		StateListDrawable selectorBg = new StateListDrawable();
 		selectorBg.addState(new int[] { android.R.attr.state_pressed }, pressBg);
 		selectorBg.addState(new int[] {}, normalBg);

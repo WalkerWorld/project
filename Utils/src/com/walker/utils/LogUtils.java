@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.walker.constant.ConstentStrings;
 
-
 public class LogUtils {
 	/** 日志输出级别NONE */
 	public static final int LEVEL_NONE = 0;
@@ -25,9 +24,9 @@ public class LogUtils {
 
 	/** 日志输出时的TAG */
 	private static String mTag = "MyLibs";
-	
+
 	/**
-	 *  是否允许输出log ,用于控制输出log的信息
+	 * 是否允许输出log ,用于控制输出log的信息
 	 */
 	private static int mDebuggable = LEVEL_ERROR;
 
@@ -81,7 +80,7 @@ public class LogUtils {
 	/** 以级别为 e 的形式输出LOG */
 	public static void e(String msg) {
 		if (mDebuggable >= LEVEL_ERROR) {
-			Log.e(mTag,ConstentStrings.LogError + msg);
+			Log.e(mTag, ConstentStrings.LogError + msg);
 		}
 	}
 

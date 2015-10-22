@@ -23,6 +23,18 @@ public class MyDateUtils {
 		String sDateTime = sdf.format(lefttime); 
 		return sDateTime;
 	}
+	
+	/**
+	 * 
+	 * @Description: TODO
+	 *		将毫秒值转换成 小时－分－秒
+	 */
+	public static String formatTimeMM_SS(long lefttime) {
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss",Locale.CHINA);
+		String sDateTime = sdf.format(lefttime); 
+		return sDateTime;
+	}
+	
 	/**
 	 * 得到: 年-月-日 小时:分钟
 	 * @param lefttime

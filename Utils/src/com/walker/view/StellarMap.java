@@ -68,7 +68,7 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 
 		mGestureDetector = new GestureDetector(this);
 		setOnTouchListener(this);
-		//设置动画
+		// 设置动画
 		mZoomInNearAnim = AnimationUtil.createZoomInNearAnim();
 		mZoomInNearAnim.setAnimationListener(this);
 		mZoomInAwayAnim = AnimationUtil.createZoomInAwayAnim();
@@ -90,7 +90,7 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 			return;
 		}
 		mHidenGroupAdapter = new RandomLayout.Adapter() {
-			//取出本Adapter的View对象给HidenGroup的Adapter
+			// 取出本Adapter的View对象给HidenGroup的Adapter
 			@Override
 			public View getView(int position, View convertView) {
 				return mAdapter.getView(mHidenGroupIndex, position, convertView);
@@ -104,7 +104,7 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 		mHidenGroup.setAdapter(mHidenGroupAdapter);
 
 		mShownGroupAdapter = new RandomLayout.Adapter() {
-			//取出本Adapter的View对象给ShownGroup的Adapter
+			// 取出本Adapter的View对象给ShownGroup的Adapter
 			@Override
 			public View getView(int position, View convertView) {
 				return mAdapter.getView(mShownGroupIndex, position, convertView);
@@ -171,9 +171,9 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 		if (newGroupIndex < 0 || newGroupIndex >= mGroupCount) {
 			return;
 		}
-		//把当前显示Group角标设置为隐藏的
+		// 把当前显示Group角标设置为隐藏的
 		mHidenGroupIndex = mShownGroupIndex;
-		//把下一个Group角标设置为显示的
+		// 把下一个Group角标设置为显示的
 		mShownGroupIndex = newGroupIndex;
 		// 交换两个Group
 		RandomLayout temp = mShownGroup;
@@ -181,12 +181,12 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 		mShownGroup.setAdapter(mShownGroupAdapter);
 		mHidenGroup = temp;
 		mHidenGroup.setAdapter(mHidenGroupAdapter);
-		//刷新显示的Group
+		// 刷新显示的Group
 		mShownGroup.refresh();
-		//显示Group
+		// 显示Group
 		mShownGroup.setVisibility(View.VISIBLE);
 
-		//启动动画
+		// 启动动画
 		if (playAnimation) {
 			if (mShownGroup.hasLayouted()) {
 				mShownGroup.startAnimation(inAnim);
@@ -224,11 +224,11 @@ public class StellarMap extends FrameLayout implements AnimationListener, OnTouc
 	/** 定位 */
 	@Override
 	public void onLayout(boolean changed, int l, int t, int r, int b) {
-		//用以判断ShownGroup是否onLayout的变量
+		// 用以判断ShownGroup是否onLayout的变量
 		boolean hasLayoutedBefore = mShownGroup.hasLayouted();
 		super.onLayout(changed, l, t, r, b);
 		if (!hasLayoutedBefore && mShownGroup.hasLayouted()) {
-			mShownGroup.startAnimation(mZoomInNearAnim);//第一次layout的时候启动动画
+			mShownGroup.startAnimation(mZoomInNearAnim);// 第一次layout的时候启动动画
 		} else {
 			mShownGroup.setVisibility(View.VISIBLE);
 		}

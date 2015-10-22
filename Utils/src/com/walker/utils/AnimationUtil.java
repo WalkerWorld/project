@@ -82,6 +82,28 @@ public class AnimationUtil {
 		ret.addAnimation(anim);
 		return ret;
 	}
+	
+	/** 创建一个淡出缩小的动画 */
+	public static Animation createPanOutAnim(float degree) {
+		AnimationSet ret;
+		Animation anim;
+		ret = new AnimationSet(false);
+		// 创建一个淡出动画
+		anim = new AlphaAnimation(1f, 0f);
+		anim.setDuration(MEDIUM);
+		anim.setInterpolator(new DecelerateInterpolator());
+		ret.addAnimation(anim);
+		// 创建一个缩小动画
+		final float pivotX = (float) (1 + Math.cos(degree)) / 2;
+		final float pivotY = (float) (1 - Math.sin(degree)) / 2;
+		anim = new ScaleAnimation(1, 0.8f, 1, 0.8f, Animation.RELATIVE_TO_SELF, pivotX, Animation.RELATIVE_TO_SELF,
+				pivotY);
+		anim.setDuration(MEDIUM);
+		anim.setInterpolator(new DecelerateInterpolator());
+		ret.addAnimation(anim);
+
+		return ret;
+	}
 
 	/** 创建一个淡入放大的动画 */
 	public static Animation createPanInAnim(float degree) {
@@ -106,25 +128,5 @@ public class AnimationUtil {
 		return ret;
 	}
 
-	/** 创建一个淡出缩小的动画 */
-	public static Animation createPanOutAnim(float degree) {
-		AnimationSet ret;
-		Animation anim;
-		ret = new AnimationSet(false);
-		// 创建一个淡出动画
-		anim = new AlphaAnimation(1f, 0f);
-		anim.setDuration(MEDIUM);
-		anim.setInterpolator(new DecelerateInterpolator());
-		ret.addAnimation(anim);
-		// 创建一个缩小动画
-		final float pivotX = (float) (1 + Math.cos(degree)) / 2;
-		final float pivotY = (float) (1 - Math.sin(degree)) / 2;
-		anim = new ScaleAnimation(1, 0.8f, 1, 0.8f, Animation.RELATIVE_TO_SELF, pivotX, Animation.RELATIVE_TO_SELF,
-				pivotY);
-		anim.setDuration(MEDIUM);
-		anim.setInterpolator(new DecelerateInterpolator());
-		ret.addAnimation(anim);
-
-		return ret;
-	}
+	
 }

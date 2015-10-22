@@ -65,8 +65,8 @@ public class RandomLayout extends ViewGroup {
 		} else {
 			this.mYRegularity = 1;
 		}
-		this.mAreaCount = mXRegularity * mYRegularity;//个数等于x方向的个数*y方向的个数
-		this.mAreaDensity = new int[mYRegularity][mXRegularity];//存放区域的二维数组
+		this.mAreaCount = mXRegularity * mYRegularity;// 个数等于x方向的个数*y方向的个数
+		this.mAreaDensity = new int[mYRegularity][mXRegularity];// 存放区域的二维数组
 	}
 
 	/** 设置数据源 */
@@ -116,37 +116,37 @@ public class RandomLayout extends ViewGroup {
 		// 得到Adapter中的数据量
 		final int count = mAdapter.getCount();
 		for (int i = 0; i < count; i++) {
-			//从集合中取出之前存入的子View
+			// 从集合中取出之前存入的子View
 			View convertView = popRecycler();
-			//把该子View作为adapter的getView的历史View传入，得到返回的View
+			// 把该子View作为adapter的getView的历史View传入，得到返回的View
 			View newChild = mAdapter.getView(i, convertView);
-			if (newChild != convertView) {//如果发生了复用，那么newChild应该等于convertView
+			if (newChild != convertView) {// 如果发生了复用，那么newChild应该等于convertView
 				// 这说明没发生复用，所以重新把这个没用到的子View存入集合中
 				pushRecycler(convertView);
 			}
-			//调用父类的方法把子View添加进来
+			// 调用父类的方法把子View添加进来
 			super.addView(newChild, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		}
 	}
 
 	/** 重新分配区域 */
 	public void redistribute() {
-		resetAllAreas();//重新设置区域
+		resetAllAreas();// 重新设置区域
 		requestLayout();
 	}
 
 	/** 重新更新子View */
 	public void refresh() {
-		resetAllAreas();//重新分配区域
-		generateChildren();//重新产生子View
+		resetAllAreas();// 重新分配区域
+		generateChildren();// 重新产生子View
 		requestLayout();
 	}
 
 	/** 重写父类的removeAllViews */
 	@Override
 	public void removeAllViews() {
-		super.removeAllViews();//先删除所有View
-		resetAllAreas();//重新设置所有区域
+		super.removeAllViews();// 先删除所有View
+		resetAllAreas();// 重新设置所有区域
 	}
 
 	/** 确定子View的位置，这个就是区域分布的关键 */
@@ -165,8 +165,8 @@ public class RandomLayout extends ViewGroup {
 			availAreas.add(i);
 		}
 
-		int areaCapacity = (count + 1) / mAreaCount + 1;  //区域密度，表示一个区域内可以放几个View，+1表示至少要放一个
-		int availAreaCount = mAreaCount; //可用的区域个数
+		int areaCapacity = (count + 1) / mAreaCount + 1; // 区域密度，表示一个区域内可以放几个View，+1表示至少要放一个
+		int availAreaCount = mAreaCount; // 可用的区域个数
 
 		for (int i = 0; i < count; i++) {
 			final View child = getChildAt(i);
@@ -174,10 +174,10 @@ public class RandomLayout extends ViewGroup {
 				continue;
 			}
 
-			if (!mFixedViews.contains(child)) {//mFixedViews用于存放已经确定好位置的View，存到了就没必要再次存放
+			if (!mFixedViews.contains(child)) {// mFixedViews用于存放已经确定好位置的View，存到了就没必要再次存放
 				LayoutParams params = (LayoutParams) child.getLayoutParams();
 				// 先测量子View的大小
-				int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(this.getMeasuredWidth(), MeasureSpec.AT_MOST);//为子View准备测量的参数
+				int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(this.getMeasuredWidth(), MeasureSpec.AT_MOST);// 为子View准备测量的参数
 				int childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(this.getMeasuredHeight(), MeasureSpec.AT_MOST);
 				child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
 				// 子View测量之后的宽和高
@@ -187,13 +187,14 @@ public class RandomLayout extends ViewGroup {
 				float colW = thisW / (float) mXRegularity;
 				float rowH = thisH / (float) mYRegularity;
 
-				while (availAreaCount > 0) { //如果使用区域大于0，就可以为子View尝试分配
-					int arrayIdx = mRdm.nextInt(availAreaCount);//随机一个list中的位置
-					int areaIdx = availAreas.get(arrayIdx);//再根据list中的位置获取一个区域编号
-					int col = areaIdx % mXRegularity;//计算出在二维数组中的位置
+				while (availAreaCount > 0) { // 如果使用区域大于0，就可以为子View尝试分配
+					int arrayIdx = mRdm.nextInt(availAreaCount);// 随机一个list中的位置
+					int areaIdx = availAreas.get(arrayIdx);// 再根据list中的位置获取一个区域编号
+					int col = areaIdx % mXRegularity;// 计算出在二维数组中的位置
 					int row = areaIdx / mXRegularity;
 					if (mAreaDensity[row][col] < areaCapacity) {// 区域密度未超过限定，将view置入该区域
-						int xOffset = (int) colW - childW; //区域宽度 和 子View的宽度差值，差值可以用来做区域内的位置随机
+						int xOffset = (int) colW - childW; // 区域宽度 和
+															// 子View的宽度差值，差值可以用来做区域内的位置随机
 						if (xOffset <= 0) {
 							xOffset = 1;
 						}
@@ -204,24 +205,24 @@ public class RandomLayout extends ViewGroup {
 						// 确定左边，等于区域宽度*左边的区域
 						params.mLeft = getPaddingLeft() + (int) (colW * col + mRdm.nextInt(xOffset));
 						int rightEdge = contentRight - childW;
-						if (params.mLeft > rightEdge) {//加上子View的宽度后不能超出右边界
+						if (params.mLeft > rightEdge) {// 加上子View的宽度后不能超出右边界
 							params.mLeft = rightEdge;
 						}
 						params.mRight = params.mLeft + childW;
 
 						params.mTop = getPaddingTop() + (int) (rowH * row + mRdm.nextInt(yOffset));
 						int bottomEdge = contentBottom - childH;
-						if (params.mTop > bottomEdge) {//加上子View的宽度后不能超出右边界
+						if (params.mTop > bottomEdge) {// 加上子View的宽度后不能超出右边界
 							params.mTop = bottomEdge;
 						}
 						params.mBottom = params.mTop + childH;
 
-						if (!isOverlap(params)) {//判断是否和别的View重叠了
-							mAreaDensity[row][col]++;//没有重叠，把该区域的密度加1
-							child.layout(params.mLeft, params.mTop, params.mRight, params.mBottom);//布局子View
-							mFixedViews.add(child);//添加到已经布局的集合中
+						if (!isOverlap(params)) {// 判断是否和别的View重叠了
+							mAreaDensity[row][col]++;// 没有重叠，把该区域的密度加1
+							child.layout(params.mLeft, params.mTop, params.mRight, params.mBottom);// 布局子View
+							mFixedViews.add(child);// 添加到已经布局的集合中
 							break;
-						} else {//如果重叠了，把该区域移除，
+						} else {// 如果重叠了，把该区域移除，
 							availAreas.remove(arrayIdx);
 							availAreaCount--;
 						}

@@ -38,7 +38,8 @@ public class ShakeListener implements SensorEventListener {
 			throw new UnsupportedOperationException("Sensors not supported");
 		}
 
-		boolean supported = mSensorMgr.registerListener(this, mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+		boolean supported = mSensorMgr.registerListener(this, mSensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_UI);
 		if (!supported) {
 			mSensorMgr.unregisterListener(this);
 			return;
@@ -55,13 +56,14 @@ public class ShakeListener implements SensorEventListener {
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		System.out.println("accuracy:"+accuracy);
+		System.out.println("accuracy:" + accuracy);
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 
-		System.out.println("x:"+event.values[SensorManager.DATA_X]+"  y:"+event.values[SensorManager.DATA_Y] + "  z:"+event.values[SensorManager.DATA_Z]);
+		System.out.println("x:" + event.values[SensorManager.DATA_X] + "  y:" + event.values[SensorManager.DATA_Y]
+				+ "  z:" + event.values[SensorManager.DATA_Z]);
 
 		if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
 			return;
@@ -76,13 +78,14 @@ public class ShakeListener implements SensorEventListener {
 		if ((now - mLastTime) > TIME_THRESHOLD) {
 			long diff = now - mLastTime;
 			// 把X,Y,Z方向的距离除以时间，得出速度
-			float speed = Math.abs(event.values[SensorManager.DATA_X] + event.values[SensorManager.DATA_Y] + event.values[SensorManager.DATA_Z] - mLastX - mLastY - mLastZ) / diff * 10000;
-			if (speed > FORCE_THRESHOLD) {//如果速度大于某个值
+			float speed = Math.abs(event.values[SensorManager.DATA_X] + event.values[SensorManager.DATA_Y]
+					+ event.values[SensorManager.DATA_Z] - mLastX - mLastY - mLastZ) / diff * 10000;
+			if (speed > FORCE_THRESHOLD) {// 如果速度大于某个值
 				// 先把摇晃的次数+1，再判断是否超过了要换的次数，并且间隙大于特定的值
 				if ((++mShakeCount >= SHAKE_COUNT) && (now - mLastShake > SHAKE_DURATION)) {
 					mLastShake = now;
 					mShakeCount = 0;
-					if (mShakeListener != null) {//回调我们的listener
+					if (mShakeListener != null) {// 回调我们的listener
 						mShakeListener.onShake();
 					}
 				}
