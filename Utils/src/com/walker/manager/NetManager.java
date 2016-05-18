@@ -7,13 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -37,6 +38,7 @@ import com.walker.utils.AppUtil;
 import com.walker.utils.LogUtils;
 import com.walker.utils.StringUtils;
 import com.walker.utils.UIUtils;
+import com.walker.utils.net.NetUtils;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -48,48 +50,41 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 /**
  * 网络请求工具类
  */
 public class NetManager {
 	private static int mConTimeout = 8000;
 	private static int maxSize = 1048576;
-	/** 网络类型 0表示其他网络 1表示移动联通 2代表电信 */
-	public static int NetType = 0;
-	/** 中国移动联通wap代理网关 */
-	public static final String proxyMobile = "10.0.0.172";
-	/** 中国电信wap代理网关 */
-	public static final String proxyTel = "10.0.0.200";
-	public static final String CTWAP = "ctwap";
-	public static final String CMWAP = "cmwap";
-	public static final String WAP_3G = "3gwap";
-	public static final String UNIWAP = "uniwap";
+	public static int NetType = 0;//网络类型
 	public static final int TYPE_CM_CU_WAP = 4;// 移动联通wap10.0.0.172
 	public static final int TYPE_CT_WAP = 5;// 电信wap 10.0.0.200
 	public static final int TYPE_OTHER_NET = 6;// 电信,移动,联通,wifi 等net网络
 	private static final String TAG = "NetUtil";
 	public static Uri PREFERRED_APN_URI = Uri.parse("content://telephony/carriers/preferapn");
-
+	/** 中国移动联通wap代理网关 */
+	public static final String proxyMobile = "10.0.0.172";
+	/** 中国电信wap代理网关 */
+	public static final String proxyTel = "10.0.0.200";
+	
+	
 	private static HttpClient getHttpClient(Context context) {
 		int port = Proxy.getDefaultPort();
 		BasicHttpParams basicHttpParams = new BasicHttpParams();
 		HttpConnectionParams.setStaleCheckingEnabled(basicHttpParams, false);
-		int status = checkNetworkType(context);
+		int status = NetUtils.checkNetworkType(context);
 		switch (status) {
 		case TYPE_CM_CU_WAP:// 移动联通wap10.0.0.172
-//			LogUtils.v(TAG, "移动联通wap代理模式");
+			// LogUtils.v(TAG, "移动联通wap代理模式");
 			NetType = TYPE_CM_CU_WAP;
 			HttpHost httpHost = new HttpHost(proxyMobile, port);
-			basicHttpParams.setParameter(ConnRouteParams.DEFAULT_PROXY,
-					httpHost);
-			HttpConnectionParams.setConnectionTimeout(basicHttpParams,
-					mConTimeout);
+			basicHttpParams.setParameter(ConnRouteParams.DEFAULT_PROXY, httpHost);
+			HttpConnectionParams.setConnectionTimeout(basicHttpParams, mConTimeout);
 			HttpConnectionParams.setSoTimeout(basicHttpParams, mConTimeout);
 			HttpConnectionParams.setSocketBufferSize(basicHttpParams, maxSize);
 			return new DefaultHttpClient(basicHttpParams);
 		case TYPE_OTHER_NET:// 电信,移动,联通,wifi 等net网络
-//			LogUtils.v(TAG, "wifi 等net网络无代理");
+			// LogUtils.v(TAG, "wifi 等net网络无代理");
 			NetType = TYPE_OTHER_NET;
 			HttpParams httpParams = new BasicHttpParams();
 			HttpConnectionParams.setConnectionTimeout(httpParams, mConTimeout);
@@ -97,12 +92,11 @@ public class NetManager {
 			HttpConnectionParams.setSocketBufferSize(httpParams, maxSize);
 			return new DefaultHttpClient(httpParams);
 		case TYPE_CT_WAP:// 电信wap 10.0.0.200
-//			LogUtils.v(TAG, "电信wap代理模式");
+			// LogUtils.v(TAG, "电信wap代理模式");
 			NetType = TYPE_CT_WAP;
 			HttpHost host = new HttpHost(proxyTel, port);
 			basicHttpParams.setParameter(ConnRouteParams.DEFAULT_PROXY, host);
-			HttpConnectionParams.setConnectionTimeout(basicHttpParams,
-					mConTimeout);
+			HttpConnectionParams.setConnectionTimeout(basicHttpParams, mConTimeout);
 			HttpConnectionParams.setSoTimeout(basicHttpParams, mConTimeout);
 			HttpConnectionParams.setSocketBufferSize(basicHttpParams, maxSize);
 			return new DefaultHttpClient(basicHttpParams);
@@ -110,88 +104,47 @@ public class NetManager {
 		return new DefaultHttpClient(basicHttpParams);
 	}
 
-	public static HttpParams setHttpParams(Context context,
-			int connectionTimeout) throws Exception {
+	public static HttpParams setHttpParams(Context context, int connectionTimeout) throws Exception {
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, mConTimeout);
-		HttpConnectionParams.setSoTimeout(httpParams,
-				connectionTimeout == 0 ? mConTimeout : connectionTimeout);
+		HttpConnectionParams.setSoTimeout(httpParams, connectionTimeout == 0 ? mConTimeout : connectionTimeout);
 		HttpConnectionParams.setSocketBufferSize(httpParams, maxSize);
 		return httpParams;
 	}
 
-	/**
-	 * wifi是否连接
-	 * 
-	 * @param context
-	 * @return wifi是否连接
-	 */
-	public static boolean isWifiConnected(Context context) {
-		if (context != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mWiFiNetworkInfo = mConnectivityManager
-					.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			if (mWiFiNetworkInfo != null) {
-				return mWiFiNetworkInfo.isAvailable();
-			}
-		}
-		UIUtils.showToast(context, "当前WiFi不可用");
-		return false;
-	}
 
-	/**
-	 * 是否能上网
-	 * 
-	 * @param context
-	 * @return  是否能上网
-	 */
-	public static boolean hasConnectedNetwork(Context context) {
-		ConnectivityManager connectivity = (ConnectivityManager) context
-				.getSystemService("connectivity");
-		if (connectivity != null) {
-			NetworkInfo[] info = connectivity.getAllNetworkInfo();
-			if (info != null) {
-				for (int i = 0; i < info.length; i++) {
-					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-						return true;
-					}
-				}
-			}
-		}
-		UIUtils.showToast(context, "请连接网络");
-		return false;
-	}
 
 	/**
 	 * 下载文件工具类 要放在后台
 	 * 
-	 * @param context 
-	 * @param url 下载的url
-	 * @param path 下载路径 为空默认为sd卡根目录
+	 * @param context
+	 * @param url
+	 *            下载的url
+	 * @param path
+	 *            下载路径 为空默认为sd卡根目录
 	 * @return 是否下载成功
 	 */
-	public static boolean urlDownloadToFile(Context context, String url,
-			String path) {
+	public static boolean urlDownloadToFile(Context context, String url, String path) {
 		boolean bRet = false;
 		FileOutputStream fos = null;
 		InputStream is = null;
 		try {
 			HttpClient httpClient = null;
 			try {
-				httpClient = new DefaultHttpClient(setHttpParams(context,mConTimeout));
+				httpClient = new DefaultHttpClient(setHttpParams(context, mConTimeout));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			HttpGet get = new HttpGet(url);
 			HttpResponse response = httpClient.execute(get);
 			HttpEntity entity = response.getEntity();
-			File file=null;
-			if(path!=null){
+			File file = null;
+			if (path != null) {
 				file = new File(path);
-				file.createNewFile();//使用已经存在的文件路径存储文件
-			}else{
-				file=new File(Environment.getExternalStorageDirectory()+"/walker/", ""+System.currentTimeMillis());//已当前系统时间为名
+				file.createNewFile();// 使用已经存在的文件路径存储文件
+			} else {
+				file = new File(Environment.getExternalStorageDirectory() + "/walker/",
+						"" + System.currentTimeMillis());// 已当前系统时间为名
 			}
 			fos = new FileOutputStream(file);
 			if (entity != null) {
@@ -222,6 +175,7 @@ public class NetManager {
 
 	/**
 	 * get方法
+	 * 
 	 * @param vo
 	 *            请求工具类
 	 * @return 返回对象
@@ -230,38 +184,36 @@ public class NetManager {
 	public static Object get(RequestParameters vo) throws Exception {
 		String response = null;
 		String encodedParams = "";
-		if (vo.requestDataMap!=null&&!vo.requestDataMap.isEmpty()) {
-			//http://192.168.16.251:8080/RedBabyServer/topic
+		if (vo.requestDataMap != null && !vo.requestDataMap.isEmpty()) {
+			// http://192.168.16.251:8080/RedBabyServer/topic
 			encodedParams = encodeParameters(vo.requestDataMap);
-			//page=1&pageNum=8
-			//http://192.168.16.251:8080/RedBabyServer/topic?page=1&pageNum=8
+			// page=1&pageNum=8
+			// http://192.168.16.251:8080/RedBabyServer/topic?page=1&pageNum=8
 			//
 		}
 		if (encodedParams.length() > 0) {
 			if (-1 == vo.requestUrl.indexOf("?"))
-				//http://192.168.16.251:8080/RedBabyServer/topic
+				// http://192.168.16.251:8080/RedBabyServer/topic
 				vo.requestUrl = vo.requestUrl + "?" + encodedParams;
 			else {
-				//http://192.168.16.251:8080/RedBabyServer/topic?page=1&page=1&pageNum=8
+				// http://192.168.16.251:8080/RedBabyServer/topic?page=1&page=1&pageNum=8
 				vo.requestUrl = vo.requestUrl + "&" + encodedParams;
 			}
 		}
 		LogUtils.d("NetUtil:get:" + "url==" + vo.requestUrl);
 		// 判断本地是否有数据,有的话取本地数据
 		String md5Url = StringUtils.md5(vo.requestUrl);
-		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url)+ ".json").getAbsolutePath();
+		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);
-			if ( file.exists()) {
-				
+			if (file.exists()) {
+
 				// 是否超时
-				long savetime = System.currentTimeMillis()
-						- file.lastModified();
+				long savetime = System.currentTimeMillis() - file.lastModified();
 				LogUtils.d("本地缓存时间:=" + savetime);
 				if (savetime <= 300000L) {
 					LogUtils.d("取本地缓存");
-					BufferedReader reader = new BufferedReader(new FileReader(
-							file));
+					BufferedReader reader = new BufferedReader(new FileReader(file));
 					String s = "";
 					StringBuffer sb = new StringBuffer();
 					while ((s = reader.readLine()) != null) {
@@ -280,17 +232,19 @@ public class NetManager {
 		}
 		return vo.jsonParser.parseJSON(null);
 	}
-/**
- * 简单请求工具类  可以放在主线程
- * @param urlPath 请求url
- */
+
+	/**
+	 * 简单请求工具类 可以放在主线程
+	 * 
+	 * @param urlPath
+	 *            请求url
+	 */
 	public static void getSimple(final String urlPath) {
 		new Thread() {
 			public void run() {
 				try {
 					HttpGet httpRequest = new HttpGet(urlPath);
-					HttpResponse httpResponse = new DefaultHttpClient()
-							.execute(httpRequest);
+					HttpResponse httpResponse = new DefaultHttpClient().execute(httpRequest);
 					if (httpResponse.getStatusLine().getStatusCode() == 200) {
 						System.out.println("get提交成功=:" + urlPath);
 					} else {
@@ -312,7 +266,7 @@ public class NetManager {
 		HttpPost method = new HttpPost(vo.requestUrl);
 		LogUtils.d("NetUtil:post:" + "url==" + vo.requestUrl);
 		List<BasicNameValuePair> keyParams = new ArrayList<BasicNameValuePair>();
-		if(vo.requestDataMap!=null){
+		if (vo.requestDataMap != null) {
 			Set<String> set = vo.requestDataMap.keySet();
 			Iterator<String> iterator = set.iterator();
 			while (iterator.hasNext()) {
@@ -325,19 +279,16 @@ public class NetManager {
 		}
 		// 判断本地是否有数据,有的话取本地数据
 		String md5Url = StringUtils.md5(vo.requestUrl);
-		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url)
-				+ ".json").getAbsolutePath();
+		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);
 			if (vo.isSaveLocal && file.exists()) {
 				// 是否超时
-				long savetime = System.currentTimeMillis()
-						- file.lastModified();
+				long savetime = System.currentTimeMillis() - file.lastModified();
 				LogUtils.d("本地缓存时间:=" + savetime);
 				if (savetime <= 300000L) {
 					LogUtils.d("取本地缓存");
-					BufferedReader reader = new BufferedReader(new FileReader(
-							file));
+					BufferedReader reader = new BufferedReader(new FileReader(file));
 					String s = "";
 					StringBuffer sb = new StringBuffer();
 					while ((s = reader.readLine()) != null) {
@@ -373,22 +324,22 @@ public class NetManager {
 	 * @return 返回的结果字符串
 	 * @throws Exception
 	 */
-	private static String httpRequest(Context context, HttpRequestBase method,
-			String path, boolean isSaveLocal) throws Exception {
+	private static String httpRequest(Context context, HttpRequestBase method, String path, boolean isSaveLocal)
+			throws Exception {
 		int code = -1;
 		String result = null;
 		try {
-			
+
 			HttpResponse httpResponse = getHttpClient(context).execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			LogUtils.d("NetUtil:httpRequest:statusCode=" + statusCode);
 			if (200 == statusCode) {
-				result = EntityUtils.toString(httpResponse.getEntity(),"utf-8");
+				result = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
 				LogUtils.d("NetUtil:httpRequest:result=" + result);
-				if (result == null||result.equals("")) {
+				if (result == null || result.equals("")) {
 					return null;
 				}
-				//这个json字符串格式是否正确
+				// 这个json字符串格式是否正确
 				JSONObject resBody = AppUtil.stringToJSONObject(result);
 				if (resBody == null) {
 					return null;
@@ -406,109 +357,25 @@ public class NetManager {
 			return result;
 		} catch (Exception ioe) {
 			ioe.printStackTrace();
-			LogUtils.d("NetUtil:Response" + "htjx httpRequest exception:"
-					+ ioe.getMessage());
+			LogUtils.d("NetUtil:Response" + "htjx httpRequest exception:" + ioe.getMessage());
 			return null;
 		} finally {
 			method.abort();
 		}
 
 	}
-	/**
-	 * 获取网络类型
-	 * @param mContext
-	 * @return 网络类型
-	 */
-	public static int checkNetworkType(Context mContext) {
-		try {
-			final ConnectivityManager connectivityManager = (ConnectivityManager) mContext
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			final NetworkInfo mobNetInfoActivity = connectivityManager
-					.getActiveNetworkInfo();
-			if (mobNetInfoActivity == null || !mobNetInfoActivity.isAvailable()) {
-
-				// 注意一：
-				// NetworkInfo 为空或者不可以用的时候正常情况应该是当前没有可用网络，
-				// 但是有些电信机器，仍可以正常联网，
-				// 所以当成net网络处理依然尝试连接网络。
-				// （然后在socket中捕捉异常，进行二次判断与用户提示）。
-				Log.i("", "=====================>无网络");
-				return TYPE_OTHER_NET;
-			} else {
-				// NetworkInfo不为null开始判断是网络类型
-				int netType = mobNetInfoActivity.getType();
-				if (netType == ConnectivityManager.TYPE_WIFI) {
-					// wifi net处理
-					Log.i("", "=====================>wifi网络");
-					return TYPE_OTHER_NET;
-				} else if (netType == ConnectivityManager.TYPE_MOBILE) {
-
-					// 注意二：
-					// 判断是否电信wap:
-					// 不要通过getExtraInfo获取接入点名称来判断类型，
-					// 因为通过目前电信多种机型测试发现接入点名称大都为#777或者null，
-					// 电信机器wap接入点中要比移动联通wap接入点多设置一个用户名和密码,
-					// 所以可以通过这个进行判断！
-
-					final Cursor c = mContext.getContentResolver().query(
-							PREFERRED_APN_URI, null, null, null, null);
-					if (c != null) {
-						c.moveToFirst();
-						final String user = c.getString(c
-								.getColumnIndex("user"));
-						if (!TextUtils.isEmpty(user)) {
-							Log.i("",
-									"=====================>代理："
-											+ c.getString(c
-													.getColumnIndex("proxy")));
-							if (user.startsWith(CTWAP)) {
-								Log.i("", "=====================>电信wap网络");
-								return TYPE_CT_WAP;
-							}
-						}
-					}
-					c.close();
-
-					// 注意三：
-					// 判断是移动联通wap:
-					// 其实还有一种方法通过getString(c.getColumnIndex("proxy")获取代理ip
-					// 来判断接入点，10.0.0.172就是移动联通wap，10.0.0.200就是电信wap，但在
-					// 实际开发中并不是所有机器都能获取到接入点代理信息，例如魅族M9 （2.2）等...
-					// 所以采用getExtraInfo获取接入点名字进行判断
-
-					String netMode = mobNetInfoActivity.getExtraInfo();
-					Log.i("", "netMode ================== " + netMode);
-					if (netMode != null) {
-						// 通过apn名称判断是否是联通和移动wap
-						netMode = netMode.toLowerCase();
-						if (netMode.equals(CMWAP) || netMode.equals(WAP_3G)
-								|| netMode.equals(UNIWAP)) {
-							Log.i("", "=====================>移动联通wap网络");
-							return TYPE_CM_CU_WAP;
-						}
-
-					}
-
-				}
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return TYPE_OTHER_NET;
-		}
-
-		return TYPE_OTHER_NET;
-
-	}
 
 
 	/**
-	 * 写入本地字符串进文件 
-	 * @param path 路径
-	 * @param content 内容
+	 * 写入本地字符串进文件
+	 * 
+	 * @param path
+	 *            路径
+	 * @param content
+	 *            内容
 	 * @throws IOException
 	 */
-	private static void wirteJsonToLocal(String path, String content)
-			throws IOException {
+	private static void wirteJsonToLocal(String path, String content) throws IOException {
 		File file = new File(path);
 		if (file.exists()) {
 			file.delete();
@@ -541,15 +408,13 @@ public class NetManager {
 			String key = (String) iterator.next();
 			String value = (String) map.get(key);
 
-			if ((key == null) || ("".equals(key)) || (value == null)
-					|| ("".equals(value))) {
+			if ((key == null) || ("".equals(key)) || (value == null) || ("".equals(value))) {
 				continue;
 			}
 			if (i != 0)
 				buf.append("&");
 			try {
-				buf.append(URLEncoder.encode(key, "UTF-8")).append("=")
-						.append(URLEncoder.encode(value, "UTF-8"));
+				buf.append(URLEncoder.encode(key, "UTF-8")).append("=").append(URLEncoder.encode(value, "UTF-8"));
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -559,19 +424,4 @@ public class NetManager {
 		return buf.toString();
 	}
 
-/**
- * 是否是wifi网络
- * @param mContext 上下文
- * @return 是否是wifi网络
- */
-	public static boolean isWifi(Context mContext) {
-		ConnectivityManager connectivityManager = (ConnectivityManager) mContext
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
-		if (activeNetInfo != null
-				&& activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-			return true;
-		}
-		return false;
-	}
 }

@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.walker.manager.ThreadPoolManager;
 import com.walker.utils.LogUtils;
+import com.walker.utils.net.NetUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -232,7 +233,7 @@ public class MyImageManager {
 							SharedPreferences sp= context.getSharedPreferences("config",Context.MODE_PRIVATE);
 							// 仅在wifi下加载
 							if (sp.getBoolean("isWifiLoad", false)) {
-								if (!NetManager.isWifi(context)) {
+								if (!NetUtils.isWifiConnected(context)) {
 									return;
 								}
 							}
