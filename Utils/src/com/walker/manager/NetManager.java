@@ -10,11 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -33,22 +31,16 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import com.walker.autils.AppUtil;
+import com.walker.autils.LogUtils;
+import com.walker.autils.StringUtil;
+import com.walker.autils.net.NetUtils;
 import com.walker.bean.RequestParameters;
-import com.walker.utils.AppUtil;
-import com.walker.utils.LogUtils;
-import com.walker.utils.StringUtils;
-import com.walker.utils.UIUtils;
-import com.walker.utils.net.NetUtils;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Proxy;
 import android.net.Uri;
 import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * 网络请求工具类
@@ -202,7 +194,7 @@ public class NetManager {
 		}
 		LogUtils.d("NetUtil:get:" + "url==" + vo.requestUrl);
 		// 判断本地是否有数据,有的话取本地数据
-		String md5Url = StringUtils.md5(vo.requestUrl);
+		String md5Url = StringUtil.md5(vo.requestUrl);
 		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);
@@ -278,7 +270,7 @@ public class NetManager {
 			}
 		}
 		// 判断本地是否有数据,有的话取本地数据
-		String md5Url = StringUtils.md5(vo.requestUrl);
+		String md5Url = StringUtil.md5(vo.requestUrl);
 		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);

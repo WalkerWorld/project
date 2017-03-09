@@ -3,11 +3,6 @@ package com.example.mymodule;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.ResponseInfo;
-import com.lidroid.xutils.http.callback.RequestCallBack;
-import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 import com.walker.module.BaseApplication;
 import com.walker.module.ui.adapter.SuperAdapter;
 import com.walker.module.ui.holder.SuperHolder;
@@ -19,7 +14,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -36,16 +30,17 @@ public class MediaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media);StringUtils.isEmail("");
-        List list = new ArrayList<>();
-        SuperAdapter adapter = new SuperAdapter(list) {
+        List list = new ArrayList<String>();
+        
+        adapter = new SuperAdapter(list) {
 			
 			@Override
 			public SuperHolder getHolder() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};
         
+		
         System.out.println("########################################");
 //        testNet();
         mRecorderView = (MovieRecorderView) findViewById(R.id.movieRecorderView);
@@ -92,7 +87,7 @@ public class MediaActivity extends Activity {
  
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);       
         isFinish = false;
         mRecorderView.stop();
     }
@@ -113,6 +108,7 @@ public class MediaActivity extends Activity {
             finishActivity();
         }
     };
+	private SuperAdapter adapter;
  
     private void finishActivity() {
         if (isFinish) {

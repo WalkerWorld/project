@@ -16,9 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.walker.manager.ThreadPoolManager;
-import com.walker.utils.LogUtils;
-import com.walker.utils.net.NetUtils;
+import com.walker.autils.LogUtils;
+import com.walker.autils.net.NetUtils;
 
 import android.content.Context;
 import android.content.Intent;

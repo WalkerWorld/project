@@ -77,5 +77,24 @@ public class ThreadPoolManager {
 		}
 		executor.execute(runnable);
 	}
+	
+	/** 取消线程池中某个还未执行的任务 */
+	public synchronized void cancel(Runnable run) {
+		if (executor != null && (!executor.isShutdown() || executor.isTerminating())) {
+			executor.getQueue().remove(run);
+		}
+	}
+	/** 立刻关闭线程池，并且正在执行的任务也将会被中断 */
+	public void stop() {
+		if (executor != null && (!executor.isShutdown() || executor.isTerminating())) {
+			executor.shutdownNow();
+		}
+	}
 
+	/** 平缓关闭单任务线程池，但是会确保所有已经加入的任务都将会被执行完毕才关闭 */
+	public synchronized void shutdown() {
+		if (executor != null && (!executor.isShutdown() || executor.isTerminating())) {
+			executor.shutdownNow();
+		}
+	}
 }

@@ -470,7 +470,6 @@ public class ImageUtil {
 		.displayer(new RoundedBitmapDisplayer(20))//是否设置为圆角，弧度为多少  
 		.displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间  
 		.build();//构建完成 
-		
 	}
 	
 	public static void showImage(ImageView iv, String uri){
@@ -479,7 +478,6 @@ public class ImageUtil {
 		}
 		try {
 			imageLoader.displayImage(uri, iv, options);
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

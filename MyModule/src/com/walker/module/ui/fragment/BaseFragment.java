@@ -47,14 +47,14 @@ public abstract class BaseFragment extends Fragment {
 		view = null;
 		view = ViewUtils.getViewById(getViewId());
 		initField();
-
+		initView();
 		return view;
 	}
 
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
-		initView();
+//		initView();
 		super.onResume();
 	}
 	/**获取当前界面View对象的ID */

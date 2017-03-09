@@ -6,6 +6,7 @@ import java.util.ListIterator;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -31,7 +32,7 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		synchronized (mActivities)
 		{
 			mActivities.add(this);
@@ -127,5 +128,8 @@ public abstract class BaseActivity extends FragmentActivity implements OnClickLi
 	public static Activity getForegroundActivity(){
 		return mForegroundActivity;
 	}
-
+	/** FindViewById的泛型封装，减少强转代码 */
+	public  <T extends View> T findView_ById( int id) {
+		return (T) findViewById(id);
+	}
 }

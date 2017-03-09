@@ -67,10 +67,10 @@
         <activity
             android:name=".MediaActivity"
             android:label="@string/title_activity_media"
-            android:parentActivityName="com.qixie.chebaotong.ui.activity.BaseActivity" >
+            android:parentActivityName="com.walker.module.ui.activity.BaseActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.qixie.chebaotong.ui.activity.BaseActivity" />
+                android:value="com.walker.module.ui.activity.BaseActivity" />
         </activity>
     </application>
 
