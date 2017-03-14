@@ -1,11 +1,11 @@
 package com.walker.module.ui.widget;
 
-import com.walker.utils.AnimationUtil;
+import com.walker.autils.AnimationUtil;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;

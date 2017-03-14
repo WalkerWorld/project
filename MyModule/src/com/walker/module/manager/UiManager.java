@@ -1,7 +1,7 @@
 package com.walker.module.manager;
 
+import com.walker.autils.UIUtils;
 import com.walker.module.BaseApplication;
-import com.walker.utils.UIUtils;
 
 import android.os.Handler;
 import android.widget.Toast;

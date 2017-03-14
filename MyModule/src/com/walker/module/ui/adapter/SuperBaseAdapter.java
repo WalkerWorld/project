@@ -2,20 +2,19 @@ package com.walker.module.ui.adapter;
 
 import java.util.List;
 
-import com.walker.manager.ThreadManager;
+import com.walker.manager.ThreadPoolManager;
 import com.walker.module.constant.Constants;
 import com.walker.module.manager.UiManager;
 import com.walker.module.ui.holder.BaseHolder;
 import com.walker.module.ui.holder.LoadMoreHolder;
-import com.walker.utils.UIUtils;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 /**
  * @类名: SuperBaseAdapter
@@ -137,7 +136,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter implements OnItemC
 		}
 
 		mLoadMoreTask = new LoadMoreTask();
-		ThreadManager.getLongRunPool().execute(mLoadMoreTask);
+		ThreadPoolManager.getInstance().addTask(mLoadMoreTask);
 	}
 
 	/**

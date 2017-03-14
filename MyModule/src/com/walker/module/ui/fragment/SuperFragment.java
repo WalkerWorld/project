@@ -2,11 +2,11 @@ package com.walker.module.ui.fragment;
 
 import java.util.List;
 
+import com.walker.autils.UIUtils;
+import com.walker.autils.ViewUtils;
 import com.walker.module.callback.LoadingPagerCallback;
 import com.walker.module.ui.pager.LoadingPager;
 import com.walker.module.ui.pager.LoadingPager.LoadResult;
-import com.walker.utils.UIUtils;
-import com.walker.utils.ViewUtils;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,15 +1,12 @@
 package com.walker.module.ui.pager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.mymodule.R;
 import com.lidroid.xutils.BitmapUtils;
-import com.walker.utils.UIUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;

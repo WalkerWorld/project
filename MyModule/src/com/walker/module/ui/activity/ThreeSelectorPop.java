@@ -12,9 +12,7 @@ import java.util.ArrayList;
 
 import com.example.mymodule.R;
 import com.walker.module.BaseApplication;
-import com.walker.utils.UIUtils;
-
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.ViewPager.LayoutParams;
 import android.view.View;
@@ -92,10 +90,11 @@ public class ThreeSelectorPop {
 	 * @param flag 
 	 * @return
 	 */
+	@SuppressLint("NewApi")
 	public ListView initListView(int flag) {
 		
 		ListView mListView = new ListView(BaseApplication.getApplication());
-		mListView.setBackgroundColor(BaseApplication.getApplication().getColor(R.color.bg_gray));
+		mListView.setBackgroundColor(BaseApplication.getApplication().getColorById(R.color.bg_gray));
 		mListView.setDividerHeight(1);
 		android.view.ViewGroup.LayoutParams layoutParams = mListView.getLayoutParams();
 //		mListView.setBackgroundResource(R.drawable.bg_btn);

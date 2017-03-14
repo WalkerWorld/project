@@ -8,9 +8,9 @@
 */
 package com.walker.module.manager;
 
+import com.walker.autils.LogUtils;
+import com.walker.jutil.StringUtil;
 import com.walker.module.utils.ImageUtil;
-import com.walker.utils.LogUtils;
-import com.walker.utils.StringUtils;
 
 import android.widget.ImageView;
 
@@ -36,7 +36,7 @@ public class ImageManager {
 	 *	返回
 	 */
 	public static void showImgByUri(ImageView imageView, String uri){
-		if(!StringUtils.isEmpty(uri)){
+		if(!StringUtil.isEmpty(uri)){
 //			ImageUtil.imageLoader.displayImage(uri, imageView);
 			ImageUtil.showImage(imageView, uri);
 		}else{

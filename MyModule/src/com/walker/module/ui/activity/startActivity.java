@@ -2,23 +2,20 @@ package com.walker.module.ui.activity;
 
 import java.util.ArrayList;
 
-import com.example.mymodule.MediaActivity;
 import com.example.mymodule.R;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
+import com.walker.autils.LogUtils;
+import com.walker.autils.StringUtil;
 import com.walker.bean.RequestParameters;
 import com.walker.manager.NetManager;
 import com.walker.module.BaseApplication;
-import com.walker.utils.LogUtils;
-import com.walker.utils.StringUtils;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,21 +33,7 @@ import android.widget.TextView;
  * @date 2015年9月13日 上午8:09:39
  *
  */
-public class MainActivity extends BaseActivity {
-
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected void initData() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/*
+public class startActivity extends BaseActivity {
 
 	private TextView tvProvince;
 	private TextView tvCity;
@@ -61,13 +44,7 @@ public class MainActivity extends BaseActivity {
 	private String strTest;
 
 
-	@SuppressLint("NewApi")
-	@Override
 	protected void initView() {
-		super.initView();
-		
-		
-		
 		setContentView(R.layout.activity_main);
 		
 		etTest = (EditText) findViewById(R.id.et_test);
@@ -126,14 +103,14 @@ public class MainActivity extends BaseActivity {
 
 	
 	
-	*//**
+	/**
 	 * @Title: testPopWindow
 	 *
 	 * @Description: TODO
 	 *
 	 *  void 
 	 * 
-	 *//*
+	 */
 	
 	private void testPopWindow() {
 		tvProvince = (TextView) findViewById(R.id.tv1);
@@ -148,15 +125,9 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void initData() {
-		super.initData();
 //		AppInfoUtil.stratNotification(BaseApplication.getContext(), "Title", "推送消息，收到发财", R.drawable.ic_launcher, "com.example.mymodule", "com.walker.module.ui.activity.MainActivity");
 	}
 
-
-	 (非 Javadoc)
-	 * Description:
-	 * @param v
-	 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -171,7 +142,7 @@ public class MainActivity extends BaseActivity {
 					
 					case 0:
 						strTest = etTest.getText().toString();
-						LogUtils.e("手机号正则测试结果： " + StringUtils.matches(strTest, StringUtils.MOBILE));
+//						LogUtils.e("手机号正则测试结果： " + StringUtil.matches(strTest, StringUtil.MOBILE));
 						break;
 					case 1://展示数据库操作
 //						DbUtils dbUtils = DbUtils.create(getApplicationContext(), "user_info");
@@ -185,12 +156,12 @@ public class MainActivity extends BaseActivity {
 //						intent.setClass(BaseApplication.getApplication(), MediaActivity.class);
 //						startActivity(intent);
 						strTest = etTest.getText().toString();
-						LogUtils.e("邮箱正则测试结果： " + StringUtils.matches(strTest, StringUtils.EMAIL));
+//						LogUtils.e("邮箱正则测试结果： " + StringUtil.matches(strTest, StringUtil.EMAIL));
 						break;
 						
 					case 2:
 						strTest = etTest.getText().toString();
-						LogUtils.e("车牌号正则测试结果： " + StringUtils.matches(strTest, StringUtils.CAR_NUMBER));
+//						LogUtils.e("车牌号正则测试结果： " + StringUtil.matches(strTest, StringUtil.CAR_NUMBER));
 						break;
 
 					default:
@@ -214,7 +185,7 @@ public class MainActivity extends BaseActivity {
 	}
 
 
-	*//**
+	/**
 	 * @Title: getList
 	 *
 	 * @Description: TODO
@@ -222,10 +193,10 @@ public class MainActivity extends BaseActivity {
 	 *  @return
 	 *  View 
 	 * 
-	 *//*
+	 */
 	
 	private ArrayList<String> getList() {
-		ArrayList<String> list  = new ArrayList<>();
+		ArrayList<String> list  = new ArrayList<String>();
 		
 		for(int i = 0; i < 100; i++){
 		list.add("popWi送哈哈哈" + 1000*i + i);
@@ -237,7 +208,7 @@ public class MainActivity extends BaseActivity {
 	}
 	
 	
-*/
+
 
 	@Override
 	protected void initFiled() {
@@ -253,6 +224,6 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void initContentView() {
-		// TODO Auto-generated method stub
-		
+		initView();
+		initFiled();
 	}}

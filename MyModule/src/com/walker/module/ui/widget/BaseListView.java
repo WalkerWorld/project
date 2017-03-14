@@ -1,7 +1,5 @@
 package com.walker.module.ui.widget;
 
-import com.walker.utils.UIUtils;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;

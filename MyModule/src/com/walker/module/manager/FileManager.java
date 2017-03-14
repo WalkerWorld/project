@@ -7,11 +7,11 @@ import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
+import com.walker.autils.FileUtils;
+import com.walker.autils.LogUtils;
 import com.walker.constant.ConstentStrings;
 import com.walker.manager.ThreadPoolManager;
 import com.walker.module.callback.downloadCallback;
-import com.walker.utils.FileUtils;
-import com.walker.utils.LogUtils;
 
 /**
  * 文件管理器

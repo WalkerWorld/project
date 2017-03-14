@@ -8,8 +8,8 @@
 */
 package com.walker.module.utils;
 
+import com.walker.autils.StringUtil;
 import com.walker.module.BaseApplication;
-import com.walker.utils.StringUtils;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -51,7 +51,7 @@ public class AppUtils {
 	public static String user;
 
 	public static boolean isLogin(){
-		return !StringUtils.isEmpty(getLoginUsername());
+		return !StringUtil.isEmpty(getLoginUsername());
 	}
 	
 	

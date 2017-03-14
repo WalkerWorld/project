@@ -3,8 +3,7 @@ package com.walker.module.ui.holder;
 
 import com.example.mymodule.R;
 import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.view.annotation.ViewInject;
-import com.walker.utils.UIUtils;
+import com.walker.autils.UIUtils;
 
 import android.view.View;
 

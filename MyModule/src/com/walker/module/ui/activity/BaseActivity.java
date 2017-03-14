@@ -4,15 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
 
 
-/**
+/**  
  * @类名: BaseActivity
  * 
  * @描述: TODO

@@ -3,8 +3,10 @@ package com.walker.module;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.walker.utils.UIUtils;
+import com.walker.autils.UIUtils;
 
+import android.R;
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -148,8 +150,7 @@ public class BaseApplication extends Application
 	 *  int 
 	 * 
 	 */
-	
-	public  int getColor(int bgGray) {
+	public  int getColorById(int bgGray) {
 		// TODO Auto-generated method stub
 		return getResources().getColor(bgGray);
 	}

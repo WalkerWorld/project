@@ -10,15 +10,11 @@ package com.walker.module.ui.holder;
 
 import java.util.List;
 
-import com.walker.module.manager.UiManager;
-import com.walker.utils.UIUtils;
-import com.walker.utils.ViewUtils;
+import com.walker.autils.ViewUtils;
 
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * @ClassName: MyBaseHolder

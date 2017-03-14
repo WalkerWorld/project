@@ -2,8 +2,8 @@ package com.walker.module.http;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.walker.autils.LogUtils;
 import com.walker.module.bean.Response;
-import com.walker.utils.LogUtils;
 
 import android.util.SparseArray;
 

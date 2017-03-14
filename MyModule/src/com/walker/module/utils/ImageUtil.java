@@ -24,11 +24,10 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.walker.autils.StringUtil;
+import com.walker.autils.UIUtils;
 import com.walker.module.BaseApplication;
-import com.walker.utils.StringUtils;
-import com.walker.utils.UIUtils;
 
-import android.R.transition;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -66,7 +65,7 @@ public class ImageUtil {
 	 */
 	public static Drawable getDrawableFromAssets(String imageName){
 		
-		if(!StringUtils.isEmpty(imageName)){
+		if(!StringUtil.isEmpty(imageName)){
 			Bitmap bt = BaseApplication.getApplication().getImageFromAssetsFile(imageName);
 			if(bt != null){
 				return bitmapToDrawable(bt);

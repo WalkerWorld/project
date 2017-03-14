@@ -1,10 +1,10 @@
 package com.walker.module.ui.pager;
 
 import com.example.mymodule.R;
-import com.walker.manager.ThreadManager;
+import com.walker.autils.UIUtils;
+import com.walker.manager.ThreadPoolManager;
 import com.walker.module.callback.LoadingPagerCallback;
 import com.walker.module.manager.UiManager;
-import com.walker.utils.UIUtils;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -120,8 +120,7 @@ public abstract class LoadingPager extends FrameLayout {
 		if (mState == START_UNLOADING) {
 			mState = START_LOADING;
 
-			ThreadManager manager = new ThreadManager();
-			manager.getLongPool().execute(new TaskRunable());
+			ThreadPoolManager.getInstance().addTask(new TaskRunable());
 		}
 		/**
 		 * 这个地方代码中没有写需要注意

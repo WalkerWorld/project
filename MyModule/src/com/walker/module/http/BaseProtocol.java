@@ -11,9 +11,9 @@ import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
-import com.walker.utils.FileUtils;
-import com.walker.utils.IOUtils;
-import com.walker.utils.LogUtils;
+import com.walker.autils.FileUtils;
+import com.walker.autils.IOUtils;
+import com.walker.autils.LogUtils;
 
 /**
  * @类名: BaseProtocol

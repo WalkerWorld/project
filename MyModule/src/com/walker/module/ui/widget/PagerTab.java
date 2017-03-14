@@ -1,8 +1,8 @@
 package com.walker.module.ui.widget;
 
 import com.example.mymodule.R;
+import com.walker.autils.UIUtils;
 import com.walker.module.ui.activity.BaseActivity;
-import com.walker.utils.UIUtils;
 
 import android.content.Context;
 import android.graphics.Canvas;

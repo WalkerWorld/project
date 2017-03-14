@@ -3,12 +3,12 @@ package com.example.mymodule;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.walker.autils.StringUtil;
 import com.walker.module.BaseApplication;
 import com.walker.module.ui.adapter.SuperAdapter;
 import com.walker.module.ui.holder.SuperHolder;
 import com.walker.module.ui.widget.MovieRecorderView;
 import com.walker.module.ui.widget.MovieRecorderView.OnRecordFinishListener;
-import com.walker.utils.StringUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public class MediaActivity extends Activity {
     @Override  
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_media);StringUtils.isEmail("");
+        setContentView(R.layout.activity_media);StringUtil.isEmail("");
         List list = new ArrayList<String>();
         
         adapter = new SuperAdapter(list) {
@@ -42,7 +42,6 @@ public class MediaActivity extends Activity {
         
 		
         System.out.println("########################################");
-//        testNet();
         mRecorderView = (MovieRecorderView) findViewById(R.id.movieRecorderView);
         mShootBtn = (Button) findViewById(R.id.shoot_button);
          
