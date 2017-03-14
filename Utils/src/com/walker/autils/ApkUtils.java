@@ -22,7 +22,7 @@ public class ApkUtils {
 	 * 安装apk
 	 * 
 	 * @param context
-	 *            上下文
+	 *            上下文 测试提交
 	 * @param path
 	 *            apk路径
 	 */
