@@ -35,6 +35,10 @@ public class LogUtils {
 	/** 写文件的锁对象 */
 	private static final Object mLogLock = new Object();
 
+	public static void print(String msg){
+		System.out.println(msg + "");
+	}
+	
 	/** 以级别为 d 的形式输出LOG */
 	public static void v(String msg) {
 		if (mDebuggable >= LEVEL_VERBOSE) {

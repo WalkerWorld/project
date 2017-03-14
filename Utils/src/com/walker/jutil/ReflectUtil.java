@@ -171,7 +171,7 @@ public class ReflectUtil {
 				e1.printStackTrace();
 			}
 			// 获取字段注解：表名、类型
-			Table tableAnnotation = field.getAnnotation(Table.class);
+			Column tableAnnotation = field.getAnnotation(Column.class);
 			// System.out.println(field.getName() + "-name-: " +
 			// tableAnnotation.name() + "-type- :" + tableAnnotation.type() +
 			// "-value: -" );

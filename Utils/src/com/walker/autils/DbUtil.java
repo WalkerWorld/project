@@ -8,6 +8,9 @@
 */
 package com.walker.autils;
 
+import com.walker.db.DataBaseManager;
+import com.walker.jutil.SqlUtil;
+
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -25,12 +28,18 @@ public class DbUtil {
 	private static SQLiteDatabase sqLiteDatabase;
 	public DbUtil() {}
 	/**数据库工具类单例实现*/
-	public static DbUtil getInstance(SQLiteDatabase sqLiteDb){
+	public static DbUtil getInstance(){
 		if(dbUtil == null){
 			dbUtil = new DbUtil();
 		}
-		sqLiteDatabase = sqLiteDb;
+		dbUtil.init();
 		return dbUtil;
+	}
+	
+	public void init(){
+		if(sqLiteDatabase == null || !sqLiteDatabase.isOpen() || sqLiteDatabase.isReadOnly()){
+			sqLiteDatabase = DataBaseManager.getInstance().getDataBase();
+		}
 	}
 	
 	/**
@@ -42,8 +51,43 @@ public class DbUtil {
 	 */
 	public void insertObj(Object tableObj){
 		ContentValues contentValues = new ContentValues();
-		
 		sqLiteDatabase.insert("", null, contentValues);
 		
 	}
+	
+	/**
+	 * Add by walker Date 2017年3月9日
+	 * @Description: TODO
+	 * 创建实体对应的数据库表 
+	 *  @param object 数据库表对应的实体
+	 */
+	public void insertTable(Object object){
+		String insertSql = SqlUtil.getInstance().getCreateTableSql(object);
+		sqLiteDatabase.execSQL(insertSql);
+	}
+
+	/**
+	 * Add by walker Date 2017年3月9日
+	 * @Description: TODO
+	 * 判断实体对应的表是否存在 
+	 *  @param object 
+	 *  @return 如果表已存在返回true，否则返回false
+	 */
+	public boolean isExistTable(Object object){
+		String queryTableSql = SqlUtil.getInstance().getQueryTableExistSql(object);
+		return false;
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月9日
+	 * @Description: TODO
+	 *  更新数据库表字段  
+	 *  @param object 数据库表对应实体
+	 *  
+	 */
+	public void updateTable(Object object){
+	}
+	
+	
+
 }

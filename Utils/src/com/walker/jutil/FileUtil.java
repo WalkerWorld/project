@@ -11,7 +11,10 @@ package com.walker.jutil;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+
+import com.walker.app.BaseApplication;
 
 import android.os.Environment;
 
@@ -28,7 +31,8 @@ public class FileUtil {
 	private static String logPath;
 	/** 日志记录标记：为true则记录日志，为false不记录日志，程序启动默认为false */
 	private static boolean isRecord = false;
-
+	private static int effectTime = 1;
+	
 	/**
 	 * Add by walker Date 2017年2月23日
 	 * 
@@ -51,19 +55,49 @@ public class FileUtil {
 	}
 
 	public static void init() {
-		logPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/com.bohan.ems/Log/";
+		logPath = Environment.getExternalStorageDirectory() + "/"+BaseApplication.getInstance().getPackageName() + "/Log/";
 		File file = new File(logPath);
 		if (!file.exists()) {
 			file.mkdirs();
 		}
+		if (fileMap == null) {
+			fileMap = new HashMap<String, File>();
+		}
 	}
 
+	/**
+	 * Add by walker Date 2017年3月13日
+	 * @Description: TODO
+	 * 	删除文件夹或文件 
+	 *  @param dir 文件指定路径
+	 */
+	public static void deleteDirectory(File dir){
+		if(dir == null || !dir.exists()){
+			return;
+		}
+		if(!dir.isDirectory()){
+			dir.delete();
+			return;
+		}
+		File[] listFile = dir.listFiles();
+		for(File file: listFile){
+			if (file.exists()) {
+				if (!file.delete()) {
+					//删除失败
+					if (file.isDirectory()) {
+						deleteDirectory(file);
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Add by walker Date 2017年2月20日
 	 * 
 	 * @param <T>
 	 * @Description: TODO
-	 * 
+	 * 写入日志信息
 	 * @param gekou_list
 	 */
 	public static <T> void writeLog(List<T> list) {
@@ -80,7 +114,7 @@ public class FileUtil {
 	 * 
 	 * @param <T>
 	 * @Description: TODO
-	 * 
+	 * 	写入日志信息
 	 * @param resultStrings
 	 */
 	public static <T> void writeLog(T[] res) {
@@ -99,24 +133,7 @@ public class FileUtil {
 	 *            写入日志信息
 	 */
 	public static void writeLog(String msg) {
-		init();
-		// 当前为非日志状态，不记录日志信息
-		if (!isRecord) {
-			return;
-		}
-		try {
-			String path = logPath + "log.txt";
-			File file = new File(path);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file, true);
-			fw.write(msg + "\n");
-			fw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		writeLog(StringUtil.getCurrentDate() + "\n" + msg, "log");
 	}
 	/**
 	 * Add by walker Date 2017年2月23日
@@ -127,24 +144,7 @@ public class FileUtil {
 	 * @param flag 0-获取实体中所有的字段; 其他为有值字段
 	 */
 	public static void writeLog(Object obj, int flag) {
-		init();
-		// 当前为非日志状态，不记录日志信息
-		if (!isRecord) {
-			return;
-		}
-		try {
-			String path = logPath + "log.txt";
-			File file = new File(path);
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			
-			FileWriter fw = new FileWriter(file, true);
-			fw.write(getJsonByObj(obj, flag) + "\n");
-			fw.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		writeLog(getJsonByObj(obj, flag), "log");
 	}
 
 	/**
@@ -192,18 +192,72 @@ public class FileUtil {
 		if (!isRecord) {
 			return;
 		}
+		writeMsg(msg, fileName);
+	}
+	static HashMap<String, File> fileMap;
+	/**
+	 * Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 * 	向指定文件中输出信息 
+	 *  @param msg 写入内容信息
+	 *  @param fileName 写入文件名称
+	 */
+	public static void writeMsg(String msg, String fileName){
 		try {
-			String path = logPath + fileName;
-			File file = new File(path);
+			init();
+			String path = logPath+ fileName +"!"+StringUtil.getCurrentDay()+".txt";
+			FileWriter fw;
+			File file = fileMap.get(path);
+			if(file == null){
+				file = new File(path);
+				fileMap.put(path, file);
+			}
 			if (!file.exists()) {
 				file.createNewFile();
-			}
-
-			FileWriter fw = new FileWriter(file, true);
-			fw.write(msg + "\n");
+			} 
+			fw = new FileWriter(file, true);
+			fw.write(StringUtil.getCurrentDate() + "\n" + msg + "\n");
 			fw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 *	清空无效日志信息
+	 */
+	public static void deleteHistory() {
+		try {
+			init();
+			File file = new File(logPath);
+			if(file.isDirectory() && !file.exists()){
+				file.mkdirs();
+				writeError("创建LOG日志路径");
+				return;
+			}
+			for (File fileChild : file.listFiles()) {
+				int difData = TypeUtil.strToInt(StringUtil.getDay(System.currentTimeMillis()-fileChild.lastModified()));
+				if (difData > effectTime) {
+					writeError("删除日志：" +fileChild.getName() + "\t占用时间：" + StringUtil.getDay(System.currentTimeMillis()-fileChild.lastModified())+ "\t生效时间：" + effectTime);
+					fileChild.delete();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Add by walker Date 2017年3月8日
+	 * @Description: TODO
+	 * 写error日志，无标记限制 
+	 *  @param msg 写入文本内容
+	 */
+	public static void writeError(String msg) {
+		writeMsg(msg, "error");
+	}
+
+	
 }

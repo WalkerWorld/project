@@ -8,8 +8,14 @@
 */
 package com.walker.test;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 
+import com.walker.jutil.SqlUtil;
+import com.walker.jutil.TestDao;
 import com.walker.jutil.TypeUtil;
 
 /** @ClassName: mainTest
@@ -24,6 +30,18 @@ import com.walker.jutil.TypeUtil;
 public class mainTest {
 	@Test
 	public void test(){
-		System.out.println("======" + TypeUtil.getNumStr(00000002.126423423423423));
+		int date = getDate().getDate();
+		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd");  
+	        long nowTime = System.currentTimeMillis();  
+	        Calendar cal = Calendar.getInstance();  
+	        SqlUtil.getInstance().getCreateTableSql(new TestDao());
+		System.out.println("======" + dateFormat.format(System.currentTimeMillis()));
 	}
+	public static long LOCAL_TIME = 0L;
+	public static long DATABASE_TIME = 0L;
+
+	public static Date getDate() {
+		return new Date(new Date().getTime() - LOCAL_TIME + DATABASE_TIME);
+	}
+
 }

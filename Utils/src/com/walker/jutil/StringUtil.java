@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -362,4 +363,50 @@ public class StringUtil {
 		DecimalFormat decimalFormat = new DecimalFormat(".00");// 构造方法的字符格式这里如果小数不足2位,会以0补足.
 		return decimalFormat.format(d);// format 返回的是字符串
 	}
+
+	/**
+	 * Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 * 当前日期： yyyy-MM-dd
+	 *  @return 返回当前年月日时间日期字符串
+	 */
+	public static String getCurrentDay(){
+		try {
+			Date date=new Date();
+			DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+			return format.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ""; 
+		}
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 * 当前系统时间转化成毫秒数 
+	 *  @param date 日期yyyy-MM-dd
+	 *  @return 返回对应的毫秒数
+	 */
+	public static long dateToMillion(String date){
+		try {
+			DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+			return format.parse(date).getTime();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return System.currentTimeMillis();
+		}
+	}
+	
+
+	/**Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 *  获取毫秒数对应的天数
+	 *  @param currentTimeMillis 对应的时间
+	 */
+	public static String getDay(long currentTimeMillis) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd"); 
+		return dateFormat.format(currentTimeMillis);
+	}
+
 }

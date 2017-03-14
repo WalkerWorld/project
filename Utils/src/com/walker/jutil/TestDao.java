@@ -8,7 +8,7 @@
 */
 package com.walker.jutil;
 
-import com.walker.jutil.Table.types;
+import com.walker.jutil.Column.columnType;
 
 /**
  * @ClassName: TestDao
@@ -20,29 +20,50 @@ import com.walker.jutil.Table.types;
  * @date 2017年2月4日 下午12:44:00
  *
  */
-public class TestDao extends Object{
-	@Table(isID=false)
+@Table(tableName="walker")
+public class TestDao extends Object {
+	@Column(columnType = columnType.TEXT)
 	public String s;
-	@Table(name="msgi", type = types.Boolean)
+	@Column(columnName = "msgi")
 	private String msg;
-	@Table(name = "ID", type = types.Double)
-	 String id;
+	@Column
+	int id;
+	@Column
+	boolean boolea;
+	@Column
+	Boolean boo;
+	@Column(columnName="uselevel")
+	int useLevel;
+	@Column
+	short shor;
+	@Column
+	Short sh;
+	@Column
+	long lon;
+	@Column
+	Long lo;
+	@Column
+	byte byt;
+	@Column
+	Byte by;
+	@Column
+	float floa;
+	@Column
+	Float fl;
+	@Column
+	double doub;
+	@Column
+	Double dou;
+	@Column
+	char ch;
+	@Column
+	Character chara;
 	public String getMsg() {
 		return msg;
 	}
-	
+
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	
-	
+
 }

@@ -44,4 +44,19 @@ public class TypeUtil {
 //		return String.format("%.2f", num);
 	}
 	
+	/**
+	 * Add by walker Date 2017年3月12日
+	 * @Description: TODO
+	 *  
+	 *  @param date
+	 */
+	public static int strToInt(String intStr) {
+		try {
+			return Integer.parseInt(intStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 }

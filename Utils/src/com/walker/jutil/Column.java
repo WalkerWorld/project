@@ -25,9 +25,20 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target (ElementType.TYPE)
+@Target (ElementType.FIELD)
 @Retention (RetentionPolicy.RUNTIME)
-public @interface Table {
+public @interface Column {
 	/**数据库表名称*/
 	public String tableName() default "";
+	/**数据库字段名称*/
+	public String columnName() default "";	
+	/**数据库字段类型*/
+	public columnType columnType() default columnType.TEXT;
+	/**是否为ID自增长*/
+	public boolean isID() default false;
+	/**是否为主键*/
+	public boolean isPrimaryKey() default false;
+	/**是否唯一*/
+	public boolean isUnique() default false;
+	public enum columnType{TEXT, INTEGER, BLOB, Boolean}
 }
