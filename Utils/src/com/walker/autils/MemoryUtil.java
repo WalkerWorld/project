@@ -84,7 +84,7 @@ public class MemoryUtil {
 				long totalBlocks = stat.getBlockCount();
 				totalSpace = totalBlocks * blockSize;
 			} catch (Exception e) {
-				LogUtils.e(e);
+				LogUtil.e(e);
 			}
 		}
 	
@@ -101,7 +101,7 @@ public class MemoryUtil {
 				StatFs stat = new StatFs(path);
 				availableSpace = stat.getAvailableBlocks() * (long) stat.getBlockSize();
 			} catch (Exception e) {
-				LogUtils.e(e);
+				LogUtil.e(e);
 			}
 		}
 		return availableSpace;
@@ -119,7 +119,7 @@ public class MemoryUtil {
 			long totalBlocks = stat.getBlockCount();// 获取该区域可用的文件系统数
 			totalSpace = totalBlocks * blockSize;
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return totalSpace;
 	}
@@ -137,7 +137,7 @@ public class MemoryUtil {
 																// ，获取当前可用的存储空间
 			availableSpace = availableBlocks * blockSize;
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return availableSpace;
 	}
@@ -163,7 +163,7 @@ public class MemoryUtil {
 		if (context == null) {
 			return -1;
 		}
-		if (StringUtil.isEmpty(packageName)) {
+		if (com.walker.jutil.StringUtil.isEmpty(packageName)) {
 			packageName = context.getPackageName();
 		}
 		long size = 0;
@@ -197,12 +197,12 @@ public class MemoryUtil {
 		long size = 0;
 		String path = "/proc/meminfo";// 系统内存信息文件
 		try {
-			String totalMemory = FileUtils.readProperties(path, "MemTotal", null);// 读出来是带单位kb的，并且单位前有空格，所以去掉最后三位
-			if (!StringUtil.isEmpty(totalMemory) && totalMemory.length() > 3) {
+			String totalMemory = FileUtils.getInstance().readProperties(path, "MemTotal", null);// 读出来是带单位kb的，并且单位前有空格，所以去掉最后三位
+			if (!com.walker.jutil.StringUtil.isEmpty(totalMemory) && totalMemory.length() > 3) {
 				size = Long.valueOf(totalMemory.substring(0, totalMemory.length() - 3)) * 1024;
 			}
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return size;
 	}

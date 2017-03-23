@@ -21,11 +21,16 @@ public class AppConfig {
 	/**数据库存储路径*/
 	private String db_path;
 	/**数据库名称*/
-	private String db_name;
-	private int db_version;
-	static AppConfig config;
-	
-	
+	private String db_name = "ems.db";
+	/**数据库版本号*/
+	private int db_version=1;
+	/**单例对象*/
+	private static AppConfig config;
+	/**应用是否处于开发状态：true 处于开发状态，false 应用处于线上状态*/
+	private boolean isDebug = false;
+	/**缓存文件存储天数:默认存储5天*/
+	private int cacheDay = 5;
+
 	private AppConfig(){}
 	public static AppConfig getInstance(){
 		if(config == null){
@@ -33,32 +38,9 @@ public class AppConfig {
 		}
 		return config;
 	}
-	
-	
-	public String getDb_name() {
-		return db_name;
-	}
-	
-	public void setDb_name(String db_name) {
-		this.db_name = db_name;
-	}
-	
-	public int getDb_version() {
-		return db_version;
-	}
-	
-	public void setDb_version(int db_version) {
-		this.db_version = db_version;
-	}
-	
 	public static AppConfig getConfig() {
-		return config;
+		return getInstance();
 	}
-	
-	public static void setConfig(AppConfig config) {
-		AppConfig.config = config;
-	}
-	
 	/**
 	 * Add by walker Date 2017年3月9日
 	 * @Description: TODO
@@ -67,16 +49,42 @@ public class AppConfig {
 	public void init(){
 		
 	}
-	
+	/**获取指定数据库名称*/
+	public String getDb_name() {
+		return db_name;
+	}
+	/**设置数据库名称*/
+	public void setDb_name(String db_name) {
+		this.db_name = db_name;
+	}
+	/**获取数据库版本号*/
+	public int getDb_version() {
+		return db_version;
+	}
+	/**设置数据库版本号*/
+	public void setDb_version(int db_version) {
+		this.db_version = db_version;
+	}
+	/**获取数据库路径*/
 	public String getDb_path() {
 		return db_path;
 	}
-	
-
+	/**设置数据库路径*/
 	public void setDb_path(String db_path) {
 		this.db_path = db_path;
 	}
+	/**返回是否为debug模式*/
+	public boolean isDebug() {
+		return isDebug;
+	}
+	public void setDebug(boolean isDebug) {
+		this.isDebug = isDebug;
+	}
 	
-
-	
+	public int getCacheDay() {
+		return cacheDay;
+	}
+	public void setCacheDay(int cacheDay) {
+		this.cacheDay = cacheDay;
+	}
 }

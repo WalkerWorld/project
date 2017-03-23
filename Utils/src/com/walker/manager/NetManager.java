@@ -32,10 +32,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import com.walker.autils.AppUtil;
-import com.walker.autils.LogUtils;
+import com.walker.autils.LogUtil;
 import com.walker.autils.StringUtil;
 import com.walker.autils.net.NetUtils;
 import com.walker.bean.RequestParameters;
+import com.walker.jutil.DataUtil;
 
 import android.content.Context;
 import android.net.Proxy;
@@ -192,9 +193,9 @@ public class NetManager {
 				vo.requestUrl = vo.requestUrl + "&" + encodedParams;
 			}
 		}
-		LogUtils.d("NetUtil:get:" + "url==" + vo.requestUrl);
+		LogUtil.d("NetUtil:get:" + "url==" + vo.requestUrl);
 		// 判断本地是否有数据,有的话取本地数据
-		String md5Url = StringUtil.md5(vo.requestUrl);
+		String md5Url = DataUtil.md5(vo.requestUrl);
 		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);
@@ -202,9 +203,9 @@ public class NetManager {
 
 				// 是否超时
 				long savetime = System.currentTimeMillis() - file.lastModified();
-				LogUtils.d("本地缓存时间:=" + savetime);
+				LogUtil.d("本地缓存时间:=" + savetime);
 				if (savetime <= 300000L) {
-					LogUtils.d("取本地缓存");
+					LogUtil.d("取本地缓存");
 					BufferedReader reader = new BufferedReader(new FileReader(file));
 					String s = "";
 					StringBuffer sb = new StringBuffer();
@@ -256,7 +257,7 @@ public class NetManager {
 	public static Object post(RequestParameters vo) throws Exception {
 
 		HttpPost method = new HttpPost(vo.requestUrl);
-		LogUtils.d("NetUtil:post:" + "url==" + vo.requestUrl);
+		LogUtil.d("NetUtil:post:" + "url==" + vo.requestUrl);
 		List<BasicNameValuePair> keyParams = new ArrayList<BasicNameValuePair>();
 		if (vo.requestDataMap != null) {
 			Set<String> set = vo.requestDataMap.keySet();
@@ -270,16 +271,16 @@ public class NetManager {
 			}
 		}
 		// 判断本地是否有数据,有的话取本地数据
-		String md5Url = StringUtil.md5(vo.requestUrl);
+		String md5Url = DataUtil.md5(vo.requestUrl);
 		String path = new File(vo.context.getCacheDir(), URLEncoder.encode(md5Url) + ".json").getAbsolutePath();
 		if (vo.isSaveLocal) {
 			File file = new File(path);
 			if (vo.isSaveLocal && file.exists()) {
 				// 是否超时
 				long savetime = System.currentTimeMillis() - file.lastModified();
-				LogUtils.d("本地缓存时间:=" + savetime);
+				LogUtil.d("本地缓存时间:=" + savetime);
 				if (savetime <= 300000L) {
-					LogUtils.d("取本地缓存");
+					LogUtil.d("取本地缓存");
 					BufferedReader reader = new BufferedReader(new FileReader(file));
 					String s = "";
 					StringBuffer sb = new StringBuffer();
@@ -324,10 +325,10 @@ public class NetManager {
 
 			HttpResponse httpResponse = getHttpClient(context).execute(method);
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
-			LogUtils.d("NetUtil:httpRequest:statusCode=" + statusCode);
+			LogUtil.d("NetUtil:httpRequest:statusCode=" + statusCode);
 			if (200 == statusCode) {
 				result = EntityUtils.toString(httpResponse.getEntity(), "utf-8");
-				LogUtils.d("NetUtil:httpRequest:result=" + result);
+				LogUtil.d("NetUtil:httpRequest:result=" + result);
 				if (result == null || result.equals("")) {
 					return null;
 				}
@@ -349,7 +350,7 @@ public class NetManager {
 			return result;
 		} catch (Exception ioe) {
 			ioe.printStackTrace();
-			LogUtils.d("NetUtil:Response" + "htjx httpRequest exception:" + ioe.getMessage());
+			LogUtil.d("NetUtil:Response" + "htjx httpRequest exception:" + ioe.getMessage());
 			return null;
 		} finally {
 			method.abort();
@@ -374,12 +375,12 @@ public class NetManager {
 		}
 		FileOutputStream out = null;
 		try {
-			LogUtils.d("path=" + path);
+			LogUtil.d("path=" + path);
 			out = new FileOutputStream(file);
 			byte[] bytes = content.getBytes("UTF-8");
 			out.write(bytes);
 		} catch (Exception e) {
-			LogUtils.d(e.toString());
+			LogUtil.d(e.toString());
 			e.printStackTrace();
 		} finally {
 			if (out != null) {

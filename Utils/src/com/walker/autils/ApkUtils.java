@@ -143,14 +143,14 @@ public class ApkUtils {
 			dataOutputStream = new DataOutputStream(process.getOutputStream());
 			int length = commands.length;
 			for (int i = 0; i < length; i++) {
-				LogUtils.d("commands[" + i + "]:" + commands[i]);
+				LogUtil.d("commands[" + i + "]:" + commands[i]);
 				dataOutputStream.writeBytes(commands[i] + "\n");
 			}
 			dataOutputStream.writeBytes("exit\n");
 			dataOutputStream.flush();
 			process.waitFor();
 		} catch (Exception e) {
-			LogUtils.d("copy fail" + e);
+			LogUtil.d("copy fail" + e);
 		} finally {
 			try {
 				if (dataOutputStream != null) {
@@ -182,14 +182,14 @@ public class ApkUtils {
 			dataOutputStream = new DataOutputStream(process.getOutputStream());
 			int length = commands.length;
 			for (int i = 0; i < length; i++) {
-				LogUtils.d("commands[" + i + "]:" + commands[i]);
+				LogUtil.d("commands[" + i + "]:" + commands[i]);
 				dataOutputStream.writeBytes(commands[i] + "\n");
 			}
 			dataOutputStream.writeBytes("exit\n");
 			dataOutputStream.flush();
 			process.waitFor();
 		} catch (Exception e) {
-			LogUtils.d("copy fail" + e);
+			LogUtil.d("copy fail" + e);
 		} finally {
 			try {
 				if (dataOutputStream != null) {

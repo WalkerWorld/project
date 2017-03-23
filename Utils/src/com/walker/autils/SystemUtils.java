@@ -119,7 +119,7 @@ public class SystemUtils {
 			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			imei = tm.getDeviceId();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return null == context ? null : imei;
 	}
@@ -167,7 +167,7 @@ public class SystemUtils {
 			TelephonyManager mgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			return TelephonyManager.SIM_STATE_READY == mgr.getSimState();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return false;
 	}
@@ -183,7 +183,7 @@ public class SystemUtils {
 			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			imsi = tm.getSubscriberId();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return imsi;
 	}
@@ -229,7 +229,7 @@ public class SystemUtils {
 			TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			simSN = tm.getSimSerialNumber();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return context == null ? null : simSN;
 	}
@@ -245,7 +245,7 @@ public class SystemUtils {
 			WifiInfo info = wm.getConnectionInfo();
 			mac = info.getMacAddress();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return mac;
 	}
@@ -265,7 +265,7 @@ public class SystemUtils {
 				}
 			}
 		} catch (SocketException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return null;
 	}
@@ -334,7 +334,7 @@ public class SystemUtils {
 			cpuInfo[1] += arrayOfString[2];
 			localBufferedReader.close();
 		} catch (IOException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return cpuInfo;
 	}
@@ -369,7 +369,7 @@ public class SystemUtils {
 				return resualStr;
 			}
 		} catch (IOException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return resualStr;
 	}
@@ -431,7 +431,7 @@ public class SystemUtils {
 				rom = displayId;
 			}
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return rom;
 	}
@@ -444,7 +444,7 @@ public class SystemUtils {
 			Method m = c.getMethod("get", String.class);
 			pValue = m.invoke(null, key).toString();
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return pValue;
 	}
@@ -458,7 +458,7 @@ public class SystemUtils {
 		PackageManager pm = context.getPackageManager();
 		String[] libNames = pm.getSystemSharedLibraryNames();
 		List<String> listLibNames = Arrays.asList(libNames);
-		LogUtils.d("SystemLibs: " + listLibNames);
+		LogUtil.d("SystemLibs: " + listLibNames);
 		return listLibNames;
 	}
 

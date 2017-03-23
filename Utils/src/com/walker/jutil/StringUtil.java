@@ -20,9 +20,6 @@ import java.util.regex.Pattern;
 public class StringUtil {
 	public final static String UTF_8 = "utf-8";
 
-	private static final char HEX_DIGITS[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-			'E', 'F' };
-	
 	/**
 	 * 是否是中文
 	 * 
@@ -188,54 +185,7 @@ public class StringUtil {
 		return null;
 	}
 
-	/**
-	 * 根据文件路径获取文件类型
-	 * 
-	 * @param path
-	 *            文件路径
-	 * @return 文件后缀名
-	 */
-	public static String getFileType(String path) {
-		return path.substring(path.lastIndexOf("."));
-	}
-
-	/**
-	 * 生成Md5
-	 * 
-	 * @param s
-	 *            字符串
-	 * @return 字符串的MD5值
-	 */
-	public static String md5(String s) {
-		try {
-			// Create MD5 Hash
-			MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
-			digest.update(s.getBytes());
-			byte messageDigest[] = digest.digest();
-
-			return toHexString(messageDigest);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
-	/**
-	 * @Description: TODO
-	 *	字符串转 哈希值
-	 *  @param b
-	 *  @return
-	 */
-	public static String toHexString(byte[] b) {
-		// String to byte
-		StringBuilder sb = new StringBuilder(b.length * 2);
-		for (int i = 0; i < b.length; i++) {
-			sb.append(HEX_DIGITS[(b[i] & 0xf0) >>> 4]);
-			sb.append(HEX_DIGITS[b[i] & 0x0f]);
-		}
-		return sb.toString();
-	}
+	
 
 	
 
@@ -305,33 +255,6 @@ public class StringUtil {
 	}
 
 	/**
-	 * 将字符串转行成double类型
-	 */
-	public static Double parseDouble(String s){
-		try {
-			return Double.parseDouble(s);			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0.0;
-		}
-	}
-
-	/**
-	 * @Description: TODO
-	 *	获取当前系统时间
-	 *  @return  时间格式：yyyy-MM-dd HH:mm:ss
-	 */
-	public static String getCurrentDate(){
-		try {
-			Date date=new Date();
-			DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-			return format.format(date);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
-	/**
 	 * Add by walker Date 2017年2月4日
 	 * 
 	 * @Description: TODO 测试数据加工类
@@ -346,8 +269,6 @@ public class StringUtil {
 		System.out.println("解密明文： \n" + new String(decryptData));
 	}
 
-	
-
 	/** 判断所有字符是否为空 */
 	public static boolean isAllNoEmpty(String... values) {
 		boolean res = true;
@@ -359,54 +280,5 @@ public class StringUtil {
 		return res;
 	}
 
-	static String fomat(double d) {
-		DecimalFormat decimalFormat = new DecimalFormat(".00");// 构造方法的字符格式这里如果小数不足2位,会以0补足.
-		return decimalFormat.format(d);// format 返回的是字符串
-	}
-
-	/**
-	 * Add by walker Date 2017年3月12日
-	 * @Description: TODO
-	 * 当前日期： yyyy-MM-dd
-	 *  @return 返回当前年月日时间日期字符串
-	 */
-	public static String getCurrentDay(){
-		try {
-			Date date=new Date();
-			DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-			return format.format(date);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ""; 
-		}
-	}
-	
-	/**
-	 * Add by walker Date 2017年3月12日
-	 * @Description: TODO
-	 * 当前系统时间转化成毫秒数 
-	 *  @param date 日期yyyy-MM-dd
-	 *  @return 返回对应的毫秒数
-	 */
-	public static long dateToMillion(String date){
-		try {
-			DateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-			return format.parse(date).getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return System.currentTimeMillis();
-		}
-	}
-	
-
-	/**Add by walker Date 2017年3月12日
-	 * @Description: TODO
-	 *  获取毫秒数对应的天数
-	 *  @param currentTimeMillis 对应的时间
-	 */
-	public static String getDay(long currentTimeMillis) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd"); 
-		return dateFormat.format(currentTimeMillis);
-	}
 
 }

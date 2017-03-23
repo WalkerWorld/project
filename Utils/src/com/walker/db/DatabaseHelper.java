@@ -10,13 +10,9 @@ package com.walker.db;
 
 import com.walker.app.AppConfig;
 import com.walker.app.BaseApplication;
-import android.annotation.SuppressLint;
-import android.app.Application;
-import android.content.Context;
-import android.database.DatabaseErrorHandler;
+import com.walker.autils.LogUtil;
+
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.preference.PreferenceActivity.Header;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /** @ClassName: databaseHelper
@@ -45,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onOpen(SQLiteDatabase db) {
 		super.onOpen(db);
+		LogUtil.eToFile("数据库打开");
 	}
 
 
@@ -71,6 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			helper.close();
 			helper = new DatabaseHelper();			
 		}
+		helper = new DatabaseHelper();
 		return helper;
 	}
 	

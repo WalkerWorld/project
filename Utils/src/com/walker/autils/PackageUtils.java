@@ -1,12 +1,5 @@
 package com.walker.autils;
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.text.TextUtils;
-
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -17,9 +10,20 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.text.TextUtils;
 
 /**
  * Created by mwqi on 2014/6/19.
@@ -32,7 +36,8 @@ public class PackageUtils {
 		if (null == context) {
 			return null;
 		}
-		if (StringUtil.isEmpty(packageName)) {
+		
+		if (com.walker.jutil.StringUtil.isEmpty(packageName)) {
 			packageName = context.getPackageName();
 		}
 		PackageInfo info = null;
@@ -41,7 +46,7 @@ public class PackageUtils {
 		try {
 			info = manager.getPackageInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
 		} catch (PackageManager.NameNotFoundException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return info;
 	}
@@ -78,7 +83,7 @@ public class PackageUtils {
 			packageInfo = pm.getPackageInfo(packageName, 0);
 			return isThirdPartyApp(packageInfo);
 		} catch (PackageManager.NameNotFoundException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 			return false;
 		}
 	}
@@ -143,7 +148,7 @@ public class PackageUtils {
 					resultSign += builder.toString();
 				}
 			} catch (CertificateException e) {
-				LogUtils.e(e);
+				LogUtil.e(e);
 			}
 			is.close();
 		}
@@ -196,9 +201,9 @@ public class PackageUtils {
 			String apkPath = appInfo.sourceDir;
 			signature = getJarSignature(apkPath);
 		} catch (PackageManager.NameNotFoundException e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		} catch (Exception e) {
-			LogUtils.e(e);
+			LogUtil.e(e);
 		}
 		return signature;
 	}

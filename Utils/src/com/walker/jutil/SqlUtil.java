@@ -12,11 +12,14 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.walker.autils.LogUtils;
+import com.walker.autils.LogUtil;
+import com.walker.bean.ColumnInfo;
+import com.walker.bean.TableInfo;
 import com.walker.jutil.Column.columnType;
 
 import android.content.SyncStatusObserver;
@@ -248,57 +251,33 @@ public class SqlUtil {
 	 *  @param object
 	 *  @return
 	 */
-	public String getCreateTableSql(Object tableObj) {
+	public String getCreateTableSql(Class<Object> tableClass) {
 		StringBuilder sb = new StringBuilder();
-		Class<Object> tableClass = (Class<Object>) tableObj.getClass();
-		HashMap<String, String> map = new HashMap<String, String>();
-		Table tableAnnotation = tableClass.getAnnotation(Table.class);
-		sb.append("CREATE TABLE ");
-		//获取数据库表名
-		if(tableAnnotation == null || StringUtil.isEmptyUnNull(tableAnnotation.tableName())){
-			sb.append(tableObj.getClass().getSimpleName().toUpperCase() + "(");
-		}else{
-			sb.append(tableAnnotation.tableName().toUpperCase()+"(");
-		}
+		sb.append("CREATE TABLE " + getTableName(tableClass)+ " (");
 		Column columnAnnotation;
 		//指定类的字段集合
-		Field[] files = tableObj.getClass().getDeclaredFields();
+		Field[] files = tableClass.getDeclaredFields();
 		//遍历字段集合，获取字段信息：注解信息值、字段名称、字段值
 		for(Field field: files){
 			//获取字段注解：表名、类型
 			columnAnnotation = field.getAnnotation(Column.class);
 			//字段被注解：数据库字段
-			if(columnAnnotation != null){
-				if(!StringUtil.isEmpty(columnAnnotation.columnType()+"")){
-					//字段名称
-					if (StringUtil.isEmpty(columnAnnotation.columnName())) {
-//						System.out.println(field.getName() + "-name-: " + tableAnnotation.columnName() + "-type- :" + tableAnnotation.columnType() + "\n-type: -" + field.getType() );
-//						System.out.println(" " + Double.class.getName());
-						sb.append(field.getName().toUpperCase() + " ");
-					}else{
-						sb.append(columnAnnotation.columnName().toUpperCase() + " ");
-					}
-					System.out.println("-------------" + columnAnnotation.columnType());
-					//字段类型
-					if(StringUtil.isEmpty(columnAnnotation.columnType()+"")){
-						String columnName= getColumnTypeByField(field);
-						System.out.println("字段名称："+field.getName() + "\t类型：" +getColumnTypeByField(field) );
-						if(!StringUtil.isEmpty(columnName)){
-							sb.append(columnName + " , ");
-						}else{
-//							sb.append("TEXT")
-						}
-					}else{
-						sb.append( columnAnnotation.columnType() + ",");
-					}
+			if (columnAnnotation != null) {
+				// 字段名称
+				if (StringUtil.isEmpty(columnAnnotation.columnName())) {
+					sb.append(field.getName().toUpperCase() + " ");
+				} else {
+					sb.append(columnAnnotation.columnName().toUpperCase() + " ");
 				}
+				// 字段类型:Non－不指定类型
+				sb.append(columnAnnotation.columnType() + ",");
 			}
-
 		}
-		sb.replace(sb.lastIndexOf(","), sb.length(), ")");
-		System.out.println("" + sb);
-		
-	
+		if (sb.lastIndexOf(",") != -1) {
+			sb.replace(sb.lastIndexOf(","), sb.length(), ")");
+		}else{//拼接插入表语句失败
+			return "";
+		}
 		return sb+"";
 	}
 	
@@ -309,36 +288,157 @@ public class SqlUtil {
 	 *  @param field 当前处理字段对象
 	 *  @return 返回对应数据库名称
 	 */
-	public String getColumnTypeByField(Field field) {
+	public columnType getColumnTypeByField(Field field) {
 		String type = field.getType() + "";
-		if (StringUtil.isEmpty(type)) {
-			return "";
+		try {
+			if (StringUtil.isEmpty(type)) {
+				return columnType.TEXT;// 默认为Text
+			}
+			type = type.replaceFirst("class", "").trim();
+			if ("boolean".equals(type.trim()) || Boolean.class.getName().equals(type.trim())) {
+				throw new Exception("数据库不支持类型");
+			} else if ("double".equals(type.trim()) || "float".equals(type.trim())
+					|| Double.class.getName().equals(type.trim()) || Float.class.getName().equals(type.trim())) {
+				return columnType.DOUBLE;
+			} else if ("char".equals(type.trim()) || String.class.getName().equals(type.trim())) {
+				return columnType.TEXT;
+			} else if ("byte".equals(type.trim()) || Byte.class.getName().equals(type.trim())) {
+				return columnType.BLOB;
+			} else if ("int".equals(type.trim()) || Integer.class.getName().equals(type.trim())) {
+				return columnType.INTEGER;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		type = type.replaceFirst("class", "").trim();
-		if ("boolean".equals(type.trim()) || Boolean.class.getName().equals(type.trim())) {
-			return "boolean";
-		} else if ("double".equals(type.trim()) || "float".equals(type.trim())
-				|| Double.class.getName().equals(type.trim()) || Float.class.getName().equals(type.trim())) {
-			return "double";
-		} else if ("char".equals(type.trim()) || String.class.getName().equals(type.trim())) {
-			return "Text";
-		} else if ("byte".equals(type.trim()) || Byte.class.getName().equals(type.trim())) {
-			return "BLOB";
-		} else if ("int".equals(type.trim()) || Integer.class.getName().equals(type.trim())) {
-			return "INTEGER";
-		}
-		return "";
+		return columnType.TEXT;
 	}
 	
-	/**Add by walker Date 2017年3月9日
+
+	/**
+	 * Add by walker Date 2017年3月20日
 	 * @Description: TODO
-	 *  
-	 *  @param object
+	 *  获取实体对应数据库表名
+	 *  @param tableClass 表对应实体 
+	 *  @return 返回表名（优先获取注解表名，如果未注解表名，则返回类名）大写
+	 */
+	public String getTableName(Class<? extends Object> tableClass) {
+		Table tableAnnotation = tableClass.getAnnotation(Table.class);
+		//获取数据库表名
+		if(tableAnnotation == null || StringUtil.isEmptyUnNull(tableAnnotation.tableName())){
+			return tableClass.getSimpleName().toUpperCase();
+		}else{
+			return tableAnnotation.tableName().toUpperCase();
+		}
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月21日
+	 * @Description: TODO
+	 * 获取实体对应的表信息 
+	 *  @param tableClass 实体对应类对象
+	 *  @return 返回表信息
+	 */
+	public TableInfo getTableInfo(Class<? extends Object> tableClass) {
+		TableInfo tableInfo = new TableInfo();
+		tableInfo.setName(getTableName(tableClass));
+		// 指定类的字段集合
+		Field[] files = tableClass.getDeclaredFields();
+		Column columnAnnotation;
+		ArrayList<ColumnInfo> columnInfos = new ArrayList<ColumnInfo>();
+		ColumnInfo columnInfo ;
+		// 遍历字段集合，获取字段信息：注解信息值、字段名称、字段值
+		for (Field field : files) {
+			columnInfo = new ColumnInfo();
+			// 获取字段注解：表名、类型
+			columnAnnotation = field.getAnnotation(Column.class);
+			// 字段被注解：数据库字段
+			if (columnAnnotation != null) {
+				// 字段名称
+				if (StringUtil.isEmpty(columnAnnotation.columnName())) {
+					columnInfo.setName(field.getName().toUpperCase());
+				} else {
+					columnInfo.setName(columnAnnotation.columnName().toUpperCase());
+				}
+				// 字段类型:Non－不指定类型
+				columnInfo.setType(columnAnnotation.columnType() + "");
+				columnInfos.add(columnInfo);
+			}
+
+		}
+		tableInfo.setColumnInfos(columnInfos);
+		return tableInfo;
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月20日
+	 * @Description: TODO
+	 * 	根据表实体获取插入数据sql 
+	 *  @param tableObj
+	 *  @param map 存储插入表中具体数据（key（数据类型），数据值）
+	 *  @return 返回插入sql语句
+	 */
+	public String getInsertSql(Object tableObj, LinkedHashMap<String, Object> map,boolean isAddNull ) {
+		StringBuilder sqlBuilder = new StringBuilder();
+		sqlBuilder.append("insert into " + getTableName(tableObj.getClass()) + "(");
+		Field[] files = tableObj.getClass().getDeclaredFields();
+		try {
+			int count = 0;
+			columnType type;
+			Object filedValue;
+			Column columnAnnotation;
+			// 遍历字段集合，获取字段信息：注解信息值、字段名称、字段值
+			for (Field field : files) {
+				field.setAccessible(true);
+				filedValue  = field.get(tableObj);
+				// 获取字段注解：表名、类型
+				columnAnnotation = field.getAnnotation(Column.class);
+				if (columnAnnotation != null) {
+					System.out.println(field.getName() + "-name-: " + columnAnnotation.columnName() + "-type- :"
+							+ columnAnnotation.columnType() + "-value: -");
+						type = getColumnTypeByField(field);
+					// 字段类型:Non－不指定类型
+					if (filedValue != null) {
+						map.put(type+""+count, filedValue);
+					} else  if(isAddNull){
+						map.put(type+""+count, filedValue);
+					}else{
+						continue;
+					}
+
+					if (StringUtil.isEmpty(columnAnnotation.columnName())) {
+						sqlBuilder.append(field.getName().toUpperCase() + ", ");
+					} else {
+						sqlBuilder.append(columnAnnotation.columnName().toUpperCase() + ", ");
+					}
+					count++;
+				}
+			}
+			sqlBuilder.replace(sqlBuilder.lastIndexOf(","), sqlBuilder.length(), ") VALUES ( ");
+			for (int i = 0; i < count; i++) {
+				sqlBuilder.append("?, ");
+			}
+			sqlBuilder.replace(sqlBuilder.lastIndexOf(","), sqlBuilder.length(), " )");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return sqlBuilder.toString();
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月21日
+	 * @Description: TODO
+	 *  根据字段信息及表名生成添加字段sql语句
+	 *  @param columnInfo
+	 *  @param tableName
 	 *  @return
 	 */
-	public String getQueryTableExistSql(Object object) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getAddColumnSql(ColumnInfo columnInfo, String tableName) {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("ALTER  TABLE   "+tableName );
+		strBuilder.append("  ADD COLUMN  " + columnInfo.getName());
+		strBuilder.append(" " + columnInfo.getType());
+		return strBuilder.toString();
 	}
 }
 

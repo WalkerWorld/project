@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.walker.constant.ConstantFlag;
+import com.walker.jutil.DataUtil;
 import com.walker.jutil.StringUtil;
 
 import android.app.Activity;
@@ -88,7 +89,7 @@ public class AppUtil {
 	public static String getXid(Context context) {
 		String xid = "";
 		try {
-			xid = StringUtil.md5(SystemUtils.getPhoneInfo(ConstantFlag.DEVICE_IMEI_ID) + SystemUtils.getPhoneInfo(ConstantFlag.MAC_ADDRESS));
+			xid = DataUtil.md5(SystemUtils.getPhoneInfo(ConstantFlag.DEVICE_IMEI_ID) + SystemUtils.getPhoneInfo(ConstantFlag.MAC_ADDRESS));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -102,7 +103,7 @@ public class AppUtil {
 	public static String getPkName(Context context) {
 		String xid = "";
 		try {
-			xid = StringUtil.md5(SystemUtils.getPhoneInfo(ConstantFlag.DEVICE_IMEI_ID) + SystemUtils.getPhoneInfo(ConstantFlag.MAC_ADDRESS));
+			xid = DataUtil.md5(SystemUtils.getPhoneInfo(ConstantFlag.DEVICE_IMEI_ID) + SystemUtils.getPhoneInfo(ConstantFlag.MAC_ADDRESS));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -172,12 +173,12 @@ public class AppUtil {
 					.generateCertificate(new ByteArrayInputStream(signbyteArray));
 			byte[] encoded = cert.getEncoded();
 			String string = new String(encoded, "gb2312");
-			LogUtils.d("X509Certificate=" + cert.toString() + "string="
+			LogUtil.d("X509Certificate=" + cert.toString() + "string="
 					+ string);
 		} catch (Exception e) {
 			if (e != null) {
 				e.printStackTrace();
-				LogUtils.d("" + e.toString());
+				LogUtil.d("" + e.toString());
 			}
 		}
 	}

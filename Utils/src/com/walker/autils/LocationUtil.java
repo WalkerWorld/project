@@ -201,26 +201,7 @@ public class LocationUtil {
 	};
 
 	private Location location;
-	/**
-	 * 手动刷新地址信息：隔一段时间获取一次地址信息
-	 */
-//	Handler handler = new Handler() {
-//		public void handleMessage(android.os.Message msg) {
-//			if (location == null) {
-//				location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//				mLocationCallback.location(location);
-//				myLocation = location;
-//			}
-//
-//			if (location == null) {
-//				location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//			}
-//
-//			if (location == null) {
-//				location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//			}
-//		};
-//	};
+
 
 	/**
 	 * 返回查询条件

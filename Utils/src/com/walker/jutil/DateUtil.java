@@ -60,6 +60,19 @@ public class DateUtil {
 	}
 	
 	/**
+	 * Add by walker Date 2017年3月22日
+	 * @Description: TODO
+	 * 格式化时间 
+	 *  @param time 时间毫秒数
+	 *  @return 返回时间毫秒对应时间信息：yyyy-MM-dd HH:mm:ss.SSS
+	 */
+	public static String formateTime(long time){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS",Locale.CHINA);
+		String sDateTime = sdf.format(time); 
+		return sDateTime;
+	}
+	
+	/**
 	 * 得到: 年-月-日
 	 * @param lefttime
 	 * @return 年-月-日
@@ -70,12 +83,6 @@ public class DateUtil {
 		return sDateTime;
 	}
 	
-	
-	public static int formatDay(long lefttime){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd", Locale.CHINA);
-		String sDataDay = sdf.format(lefttime);
-		return Integer.valueOf(sDataDay);
-	}
 	/**
 	 * 字符串转为long
 	 * @param time 字符串时间,注意:格式要与template定义的一样
@@ -117,7 +124,16 @@ public class DateUtil {
 		int i = Integer.parseInt(sDateTime);
 		return i;
 	}
-	
+	/**
+	 * 获取对应的天数
+	 *  @param lefttime 毫秒数
+	 *  @return 得到天数
+	 */
+	public static int formatDay(long lefttime){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd", Locale.CHINA);
+		String sDataDay = sdf.format(lefttime);
+		return Integer.valueOf(sDataDay);
+	}
 	/**
 	 * 得到对应的小时数
 	 */

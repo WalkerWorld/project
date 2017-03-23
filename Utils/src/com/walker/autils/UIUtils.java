@@ -23,6 +23,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,9 @@ public class UIUtils {
 
 	private static Application application;
 
+	public static void setStrEdit(String str, EditText et){
+		et.setText(com.walker.jutil.StringUtil.isEmpty(str)?"":str);
+	}
 	public static void setApplication(Application applications) {
 		application = applications;
 	}

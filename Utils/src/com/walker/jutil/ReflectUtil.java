@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: ReflectUtils
@@ -95,29 +96,29 @@ public class ReflectUtil {
 	 * @Description: TODO
 	 * 	获取对象对应的JSON数据 
 	 *  @param object
-	 *  @param flag 0-获取实体所有字段；1-获取实体中有值的字段。
+	 *  @param flag 0-获取实体所有字段；否则获取实体中有值的字段。
 	 *  @return 返回对象的json字符串
 	 */
 	public static String getJsonByObj(Object object, int flag){
 		StringBuilder sb = new StringBuilder();
-		Field[] fields = object.getClass().getDeclaredFields();
-		sb.append("{");
-		for(Field field : fields){
-			field.setAccessible(true);
-			try {
-				if(flag == 0){
-					sb.append("\"" + field.getName() + "\":\"" +field.get(object) + "\",");
-				}else if(!StringUtil.isEmpty("" + field.get(object))){
-					sb.append("\"" + field.getName() + "\":\"" +field.get(object) + "\",");
+		try {
+			Field[] fields = object.getClass().getDeclaredFields();
+			sb.append("{");
+			for (Field field : fields) {
+				field.setAccessible(true);
+				if (flag == 0) {
+					sb.append("\"" + field.getName() + "\":\"" + field.get(object) + "\",");
+				} else if (!StringUtil.isEmptyUnNull("" + field.get(object))) {
+					sb.append("\"" + field.getName() + "\":\"" + field.get(object) + "\",");
 				}
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
 			}
+			sb.replace(sb.length() - 1, sb.length(), "");
+			sb.append("}");
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
 		}
-		sb.replace(sb.length()-1, sb.length(), "");
-		sb.append("}");
 		return sb.toString();
 	}
 	
@@ -185,5 +186,34 @@ public class ReflectUtil {
 			}
 		}
 		return map;
+	}
+
+	/**Add by walker Date 2017年3月22日
+	 * @Description: TODO
+	 *   获取集合对应的json字符串
+	 *  @param objMap 数据集合
+	 *  @return 集合对应的json字符串
+	 */
+	public static String getJonsByMap(Map<Object, Object> objMap) {
+		
+		return objMap+"";
+	}
+
+	/**
+	 * Add by walker Date 2017年3月22日
+	 * @Description: TODO
+	 *  获取数组对应的json字符串
+	 *  @param objArr 实体数组
+	 *  @return 返回对应的json格式字符串
+	 */
+	public static String getJonsByArr(Object[] objArr) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for(Object obj: objArr){
+			sb.append(getJsonByObj(obj, 0));
+			sb.append(",");
+		}
+		sb.replace(sb.lastIndexOf(","), sb.length(), "]");
+		return sb.toString();
 	}
 }

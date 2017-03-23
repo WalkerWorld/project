@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.walker.autils.LogUtils;
+import com.walker.autils.LogUtil;
 import com.walker.autils.net.NetUtils;
 
 import android.content.Context;
@@ -222,7 +222,7 @@ public class MyImageManager {
 						File imageFile = new File(imagePath);
 						if (imageFile.exists() || imgUrl == null) {
 							if (imageFile.exists()) {
-								LogUtils.d("图片本地缓存加载url=:"+imagePath);
+								LogUtil.d("图片本地缓存加载url=:"+imagePath);
 								putImageToMap(imagePath);
 								msg.obj = getImageByMap(imagePath);
 								handler.sendMessage(msg);
@@ -237,7 +237,7 @@ public class MyImageManager {
 								}
 							}
 							URL url = new URL(imgUrl);
-							LogUtils.d("图片从服务器加载url=:"+imgUrl);
+							LogUtil.d("图片从服务器加载url=:"+imgUrl);
 							URLConnection conn = null;
 							switch (NetType) {// 判断网络类型,开启网络代理访问服务器
 							case TYPE_CM_CU_WAP:

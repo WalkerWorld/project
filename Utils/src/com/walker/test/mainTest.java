@@ -14,9 +14,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.walker.app.Config_Enum.FilePathEnum;
+import com.walker.autils.FileUtils;
 import com.walker.jutil.SqlUtil;
 import com.walker.jutil.TestDao;
-import com.walker.jutil.TypeUtil;
 
 /** @ClassName: mainTest
  *
@@ -34,8 +35,12 @@ public class mainTest {
 		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd");  
 	        long nowTime = System.currentTimeMillis();  
 	        Calendar cal = Calendar.getInstance();  
-	        SqlUtil.getInstance().getCreateTableSql(new TestDao());
 		System.out.println("======" + dateFormat.format(System.currentTimeMillis()));
+		System.out.println("" + FileUtils.getInstance().getPath(FilePathEnum.cache));
+//		System.out.println("" + FileUtils.getInstance().getPath(FilePathEnum.database));
+//		System.out.println("" + FileUtils.getInstance().getPath(FilePathEnum.download));
+//		System.out.println("" + FileUtils.getInstance().getPath(FilePathEnum.icon));
+//		System.out.println("" + FileUtils.getInstance().getPath(FilePathEnum.log));
 	}
 	public static long LOCAL_TIME = 0L;
 	public static long DATABASE_TIME = 0L;

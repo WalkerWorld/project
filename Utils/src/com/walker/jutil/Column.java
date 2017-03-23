@@ -40,5 +40,5 @@ public @interface Column {
 	public boolean isPrimaryKey() default false;
 	/**是否唯一*/
 	public boolean isUnique() default false;
-	public enum columnType{TEXT, INTEGER, BLOB, Boolean}
+	public enum columnType{TEXT, INTEGER, BLOB, DOUBLE}
 }
