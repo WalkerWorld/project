@@ -204,7 +204,7 @@ public class ApkUtils {
 	
 	/**
 	 * 方法描述：安装一个Apk
-	 * @return 是否成功
+	 * @return 指定包名apk已安装返回true，否则返回false
 	 */
 	public static boolean isAppInstall(Context context, String packname) {
 		PackageManager manager = context.getPackageManager();

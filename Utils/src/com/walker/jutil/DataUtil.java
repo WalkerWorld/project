@@ -8,7 +8,12 @@
 */
 package com.walker.jutil;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +26,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import android.util.Base64;
+
 
 /** @ClassName: DataUtils
  *	数据信息处理工具类
@@ -203,4 +211,56 @@ public class DataUtil {
 		return sb.toString();
 	}
 
+	/**
+	 * Add by walker Date 2017年3月27日
+	 * @Description: TODO
+	 * 字符串转base64编码 
+	 *  @param str 被编码字符串
+	 *  @return 返回编码后的字符串
+	 */
+	public String encodeBase64(String str){
+		return Base64.encodeToString(str.getBytes(), Base64.NO_WRAP);
+	}
+	/**
+	 * Add by walker Date 2017年3月27日
+	 * @Description: TODO
+	 * 字节数组转base64编码 
+	 *  @param bytes 被编码字节数组
+	 *  @return 返回编码后的字符串
+	 */
+	public String encodeBase64(byte[] bytes){
+		return Base64.encodeToString(bytes, Base64.NO_WRAP);
+	}
+	
+	/**
+	 * Add by walker Date 2017年3月27日
+	 * @Description: TODO
+	 *  将Base64字符串解码
+	 *  @param baseStr Base64编码字符串
+	 *  @return 返回解码结果的字节数组
+	 */
+	public byte[] decodeBase64(String baseStr){
+		return Base64.decode(baseStr, Base64.NO_WRAP);
+	}
+	
+	public void getMd5ByFile(String fileName){
+		 try {
+	            File file = new File(fileName);
+	            FileInputStream fis = new FileInputStream(file);
+	            MessageDigest md = MessageDigest.getInstance("MD5");
+	            byte[] buffer = new byte[1024];
+	            int length = -1;
+	            while ((length = fis.read(buffer, 0, 1024)) != -1) {
+	                md.update(buffer, 0, length);
+	            }
+	            BigInteger bigInt = new BigInteger(1, md.digest());
+	            System.out.println("文件md5值：" + bigInt.toString(16));
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (NoSuchAlgorithmException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	}
 }

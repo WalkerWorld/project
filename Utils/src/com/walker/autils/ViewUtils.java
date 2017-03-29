@@ -1,9 +1,12 @@
 package com.walker.autils;
 
+import com.walker.app.BaseApplication;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.Toast;
 
 public class ViewUtils {
 	/** 把自身从父View中移除 */
@@ -46,6 +49,7 @@ public class ViewUtils {
 	}
 	
 	static View view;
+	private static Toast toast;
 	/**
 	 * @Description: TODO 根据View ID获取对应的View布局对象
 	 * @param id
@@ -62,4 +66,22 @@ public class ViewUtils {
 		}
 		return view;
 	}
+
+	/**
+	 * Add by walker Date 2017年3月25日
+	 * @Description: TODO
+	 *  弹出Toast消息
+	 *  @param msg 具体提示内容
+	 */
+	public static void showToast(String msg){
+		if (toast == null) {
+			toast = Toast.makeText(BaseApplication.getInstance(), msg, Toast.LENGTH_SHORT);
+		}else{
+			toast.cancel();
+			toast.setText(msg);
+		}
+		toast.show();
+	}
+
 }
+
